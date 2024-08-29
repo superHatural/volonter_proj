@@ -1,0 +1,6 @@
+@VolunterProg.API_HostAddress = http://localhost:5084
+
+GET {{VolunterProg.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
