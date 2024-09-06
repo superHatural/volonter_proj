@@ -68,6 +68,15 @@ public class PetConfiguration: IEntityTypeConfiguration<Pet>
                 .IsRequired()
                 .HasMaxLength(Constants.MAX_SHORT_TEXT_LENGTH)
                 .HasColumnName("country");
+            ab.Property(a => a.PostalCode)
+                .IsRequired()
+                .HasMaxLength(Constants.MAX_SHORT_TEXT_LENGTH)
+                .HasColumnName("postal_code");
+
+            ab.Property(a => a.Street)
+                .IsRequired()
+                .HasMaxLength(Constants.MAX_SHORT_TEXT_LENGTH)
+                .HasColumnName("street");
         });
         builder.OwnsOne(p => p.Details, pb =>
         {
