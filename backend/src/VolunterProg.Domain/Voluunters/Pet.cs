@@ -38,8 +38,7 @@ public class Pet: Shared.Entity<PetId>
             return Result.Failure<Pet>($"Full name is required.");
         if (string.IsNullOrEmpty(emailAddress))
             return Result.Failure<Pet>($"Email is required.");
-        var pet = new Pet(id, fullName, emailAddress);
-        return Result.Success(pet);
+        return Result.Success(new Pet(id, fullName, emailAddress));
     }
 }
 

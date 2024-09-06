@@ -56,14 +56,18 @@ public class PetConfiguration: IEntityTypeConfiguration<Pet>
             .HasConversion(
                 status => status.ToString(),
                 value => (PetStatus)Enum.Parse(typeof(PetStatus), value));
-        builder.OwnsOne(v => v.Address, ab =>
+        
+        builder.ComplexProperty(v => v.Address, ab =>
         {
-            ab.ToJson();
             ab.Property(a => a.City)
-                .IsRequired();
+                .IsRequired()
+                .HasMaxLength(Constants.MAX_SHORT_TEXT_LENGTH)
+                .HasColumnName("city");
 
             ab.Property(a => a.Country)
-                .IsRequired();
+                .IsRequired()
+                .HasMaxLength(Constants.MAX_SHORT_TEXT_LENGTH)
+                .HasColumnName("country");
         });
         builder.OwnsOne(p => p.Details, pb =>
         {

@@ -1,7 +1,7 @@
 namespace VolunterProg.Domain.Shared;
 
-public abstract class Entity<TID> where TID: notnull
+public abstract class Entity<TId> where TId: notnull
 {
-    protected Entity(TID id) => Id = id;
-    public TID Id { get; private set; }
+    protected Entity(TId id) => Id = id;
+    public TId Id { get; private set; }
 }

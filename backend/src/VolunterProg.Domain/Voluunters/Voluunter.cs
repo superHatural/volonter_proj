@@ -44,8 +44,7 @@ public class Voluunter: Shared.Entity<VoluunterId>
             return Result.Failure<Voluunter>($"Full name is required.");
         if (string.IsNullOrEmpty(emailAddress))
             return Result.Failure<Voluunter>($"Email is required.");
-        var voluunter = new Voluunter(id, fullName, emailAddress);
-        return Result.Success(voluunter);
+        return Result.Success(new Voluunter(id, fullName, emailAddress));
     }
     
 }

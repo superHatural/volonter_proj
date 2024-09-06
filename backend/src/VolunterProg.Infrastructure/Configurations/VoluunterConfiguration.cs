@@ -6,7 +6,7 @@ using VolunterProg.Domain.Voluunters;
 
 namespace VolunterProg.Infrastructure.Configurations;
 
-public class ValuunterConfiguration: IEntityTypeConfiguration<Voluunter>
+public class VoluunterConfiguration: IEntityTypeConfiguration<Voluunter>
 {
     public void Configure(EntityTypeBuilder<Voluunter> builder)
     {
