@@ -2,21 +2,21 @@
 
 public class Pet
 {
-    public Guid Id { get; set; }
-    public string Name { get; set; } = default!;
-    public string Breed { get; set; } = default!;
-    public string Description { get; set; } = default!;
-    public string Species { get; set; } = default!;
-    public string Color { get; set; } = default!;
-    public string HealthInfo{ get; set; } = default!;
-    public string Address { get; set; } = default!;
-    public string Weight { get; set; } = default!;
-    public string Height { get; set; } = default!;
-    public string PhoneNumber { get; set; } = default!;
-    public bool IsCastrated { get; set; } = default!;
-    public string BirthDate { get; set; } = default!;
-    public bool IsVaccinated { get; set; } = default!;
-    public string Status { get; set; } = default!;
-    public List<Requisite>? Requisites { get; set; } = [];
-    public string DateOfCreate { get; set; } = default!;
+    public Guid Id { get; private set; }
+    public string Name { get; private set; } = default!;
+    public string Breed { get; private set; } = default!;
+    public string Description { get; private set; } = default!;
+    public string Species { get; private set; } = default!;
+    public string Color { get; private set; } = default!;
+    public string HealthInfo{ get; private set; } = default!;
+    public string Address { get; private set; } = default!;
+    public string Weight { get; private set; } = default!;
+    public string Height { get; private set; } = default!;
+    public string PhoneNumber { get; private set; } = default!;
+    public bool IsCastrated { get; private set; } = default!;
+    public string BirthDate { get; private set; } = default!;
+    public bool IsVaccinated { get; private set; } = default!;
+    public string Status { get; private set; } = default!;
+    public List<Requisite> Requisites { get; private set; } = [];
+    public string DateOfCreate { get; private set; } = default!;
 }
