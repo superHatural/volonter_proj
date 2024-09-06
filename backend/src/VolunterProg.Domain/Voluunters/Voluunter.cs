@@ -2,20 +2,21 @@ using CSharpFunctionalExtensions;
 
 namespace VolunterProg.Domain.Voluunters;
 
-public class Voluunter
+public class Voluunter: Shared.Entity<VoluunterId>
 {
-    public Voluunter()
+    public Voluunter(VoluunterId id) : base(id)
     {
         
     }
 
     private Voluunter(VoluunterId id, string fullName, string emailAddress)
+    : base(id)
     {
         Id = id;
         FullName = fullName;
         Email = emailAddress;
     }
-    private readonly IReadOnlyList<Pet> _pets = [];
+    private readonly List<Pet> _pets = [];
     
     public VoluunterId Id { get; private set; }
     public string FullName { get; private set; } = default!;
@@ -23,8 +24,7 @@ public class Voluunter
     public string Description { get; private set; } = default!;
     public int Experience { get; private set; } = default!;
     public string PhoneNumber { get; private set; } = default!;
-    public List<Requisite> Requisites { get; private set; } = [];
-    public List<SocialMedia> SocialMedias { get; private set; } = [];
+    public VoluunterDetails Details { get; private set; }
     public IReadOnlyList<Pet> Pets  => _pets;
     public int NumberOfFoundAHome => FindNumberOfStatus(PetStatus.FoundAHome);
     public int NumberOfNeedsHelp => FindNumberOfStatus(PetStatus.NeedsHelp);
@@ -47,4 +47,5 @@ public class Voluunter
         var voluunter = new Voluunter(id, fullName, emailAddress);
         return Result.Success(voluunter);
     }
+    
 }
