@@ -48,7 +48,10 @@ namespace VolunterProg.Infrastructure.Migrations
                     status = table.Column<string>(type: "text", nullable: false),
                     date_of_create = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     volunter_id = table.Column<Guid>(type: "uuid", nullable: true),
-                    Address = table.Column<string>(type: "jsonb", nullable: false),
+                    city = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    country = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    postal_code = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    street = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Details = table.Column<string>(type: "jsonb", nullable: true)
                 },
                 constraints: table =>
