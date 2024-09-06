@@ -39,8 +39,6 @@ namespace VolunterProg.Infrastructure.Migrations
                     species = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     color = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     health_info = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
-                    city = table.Column<string>(type: "text", nullable: false),
-                    country = table.Column<string>(type: "text", nullable: false),
                     weight = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     height = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     phone_number = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
@@ -50,6 +48,7 @@ namespace VolunterProg.Infrastructure.Migrations
                     status = table.Column<string>(type: "text", nullable: false),
                     date_of_create = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     volunter_id = table.Column<Guid>(type: "uuid", nullable: true),
+                    Address = table.Column<string>(type: "jsonb", nullable: false),
                     Details = table.Column<string>(type: "jsonb", nullable: true)
                 },
                 constraints: table =>

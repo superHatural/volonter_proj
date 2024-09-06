@@ -58,12 +58,11 @@ public class PetConfiguration: IEntityTypeConfiguration<Pet>
                 value => (PetStatus)Enum.Parse(typeof(PetStatus), value));
         builder.OwnsOne(v => v.Address, ab =>
         {
+            ab.ToJson();
             ab.Property(a => a.City)
-                .HasColumnName("city")
                 .IsRequired();
 
             ab.Property(a => a.Country)
-                .HasColumnName("country")
                 .IsRequired();
         });
         builder.OwnsOne(p => p.Details, pb =>

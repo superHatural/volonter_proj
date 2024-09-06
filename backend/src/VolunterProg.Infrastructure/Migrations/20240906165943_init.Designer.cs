@@ -12,7 +12,7 @@ using VolunterProg.Infrastructure;
 namespace VolunterProg.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240906163023_init")]
+    [Migration("20240906165943_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -180,16 +180,18 @@ namespace VolunterProg.Infrastructure.Migrations
                             b1.Property<string>("City")
                                 .IsRequired()
                                 .HasColumnType("text")
-                                .HasColumnName("city");
+                                .HasColumnName("address_city");
 
                             b1.Property<string>("Country")
                                 .IsRequired()
                                 .HasColumnType("text")
-                                .HasColumnName("country");
+                                .HasColumnName("address_country");
 
                             b1.HasKey("PetId");
 
                             b1.ToTable("pets");
+
+                            b1.ToJson("Address");
 
                             b1.WithOwner()
                                 .HasForeignKey("PetId")

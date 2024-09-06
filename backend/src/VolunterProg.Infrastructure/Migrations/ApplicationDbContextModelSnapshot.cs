@@ -168,7 +168,7 @@ namespace VolunterProg.Infrastructure.Migrations
                         .HasForeignKey("volunter_id")
                         .HasConstraintName("fk_pets_voluunters_volunter_id");
 
-                    b.OwnsOne("VolunterProg.Domain.Voluunters.Pet.Address#VolunterProg.Domain.Voluunters.Address", "Address", b1 =>
+                    b.OwnsOne("VolunterProg.Domain.Voluunters.Address", "Address", b1 =>
                         {
                             b1.Property<Guid>("PetId")
                                 .HasColumnType("uuid")
@@ -177,23 +177,25 @@ namespace VolunterProg.Infrastructure.Migrations
                             b1.Property<string>("City")
                                 .IsRequired()
                                 .HasColumnType("text")
-                                .HasColumnName("city");
+                                .HasColumnName("address_city");
 
                             b1.Property<string>("Country")
                                 .IsRequired()
                                 .HasColumnType("text")
-                                .HasColumnName("country");
+                                .HasColumnName("address_country");
 
                             b1.HasKey("PetId");
 
-                            b1.ToTable("pets", (string)null);
+                            b1.ToTable("pets");
+
+                            b1.ToJson("Address");
 
                             b1.WithOwner()
                                 .HasForeignKey("PetId")
                                 .HasConstraintName("fk_pets_pets_id");
                         });
 
-                    b.OwnsOne("VolunterProg.Domain.Voluunters.Pet.Details#VolunterProg.Domain.Voluunters.PetDetails", "Details", b1 =>
+                    b.OwnsOne("VolunterProg.Domain.Voluunters.PetDetails", "Details", b1 =>
                         {
                             b1.Property<Guid>("PetId")
                                 .HasColumnType("uuid")
@@ -201,7 +203,7 @@ namespace VolunterProg.Infrastructure.Migrations
 
                             b1.HasKey("PetId");
 
-                            b1.ToTable("pets", (string)null);
+                            b1.ToTable("pets");
 
                             b1.ToJson("Details");
 
@@ -209,7 +211,36 @@ namespace VolunterProg.Infrastructure.Migrations
                                 .HasForeignKey("PetId")
                                 .HasConstraintName("fk_pets_pets_id");
 
-                            b1.OwnsMany("VolunterProg.Domain.Voluunters.Pet.Details#VolunterProg.Domain.Voluunters.PetDetails.PetPhotos#VolunterProg.Domain.Voluunters.PetPhoto", "PetPhotos", b2 =>
+                            b1.OwnsMany("VolunterProg.Domain.Voluunters.Requisite", "Requisites", b2 =>
+                                {
+                                    b2.Property<Guid>("PetDetailsPetId")
+                                        .HasColumnType("uuid");
+
+                                    b2.Property<int>("Id")
+                                        .ValueGeneratedOnAdd()
+                                        .HasColumnType("integer");
+
+                                    b2.Property<string>("Description")
+                                        .IsRequired()
+                                        .HasMaxLength(2000)
+                                        .HasColumnType("character varying(2000)");
+
+                                    b2.Property<string>("Title")
+                                        .IsRequired()
+                                        .HasMaxLength(100)
+                                        .HasColumnType("character varying(100)");
+
+                                    b2.HasKey("PetDetailsPetId", "Id")
+                                        .HasName("pk_pets");
+
+                                    b2.ToTable("pets");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("PetDetailsPetId")
+                                        .HasConstraintName("fk_pets_pets_pet_details_pet_id");
+                                });
+
+                            b1.OwnsMany("VolunterProg.Domain.Voluunters.PetPhoto", "PetPhotos", b2 =>
                                 {
                                     b2.Property<Guid>("PetDetailsPetId")
                                         .HasColumnType("uuid");
@@ -229,36 +260,7 @@ namespace VolunterProg.Infrastructure.Migrations
                                     b2.HasKey("PetDetailsPetId", "Id")
                                         .HasName("pk_pets");
 
-                                    b2.ToTable("pets", (string)null);
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("PetDetailsPetId")
-                                        .HasConstraintName("fk_pets_pets_pet_details_pet_id");
-                                });
-
-                            b1.OwnsMany("VolunterProg.Domain.Voluunters.Pet.Details#VolunterProg.Domain.Voluunters.PetDetails.Requisites#VolunterProg.Domain.Voluunters.Requisite", "Requisites", b2 =>
-                                {
-                                    b2.Property<Guid>("PetDetailsPetId")
-                                        .HasColumnType("uuid");
-
-                                    b2.Property<int>("Id")
-                                        .ValueGeneratedOnAdd()
-                                        .HasColumnType("integer");
-
-                                    b2.Property<string>("Description")
-                                        .IsRequired()
-                                        .HasMaxLength(2000)
-                                        .HasColumnType("character varying(2000)");
-
-                                    b2.Property<string>("Title")
-                                        .IsRequired()
-                                        .HasMaxLength(100)
-                                        .HasColumnType("character varying(100)");
-
-                                    b2.HasKey("PetDetailsPetId", "Id")
-                                        .HasName("pk_pets");
-
-                                    b2.ToTable("pets", (string)null);
+                                    b2.ToTable("pets");
 
                                     b2.WithOwner()
                                         .HasForeignKey("PetDetailsPetId")
@@ -278,7 +280,7 @@ namespace VolunterProg.Infrastructure.Migrations
 
             modelBuilder.Entity("VolunterProg.Domain.Voluunters.Voluunter", b =>
                 {
-                    b.OwnsOne("VolunterProg.Domain.Voluunters.Voluunter.Details#VolunterProg.Domain.Voluunters.VoluunterDetails", "Details", b1 =>
+                    b.OwnsOne("VolunterProg.Domain.Voluunters.VoluunterDetails", "Details", b1 =>
                         {
                             b1.Property<Guid>("VoluunterId")
                                 .HasColumnType("uuid")
@@ -286,7 +288,7 @@ namespace VolunterProg.Infrastructure.Migrations
 
                             b1.HasKey("VoluunterId");
 
-                            b1.ToTable("voluunters", (string)null);
+                            b1.ToTable("voluunters");
 
                             b1.ToJson("Details");
 
@@ -294,36 +296,7 @@ namespace VolunterProg.Infrastructure.Migrations
                                 .HasForeignKey("VoluunterId")
                                 .HasConstraintName("fk_voluunters_voluunters_id");
 
-                            b1.OwnsMany("VolunterProg.Domain.Voluunters.Voluunter.Details#VolunterProg.Domain.Voluunters.VoluunterDetails.Requisites#VolunterProg.Domain.Voluunters.Requisite", "Requisites", b2 =>
-                                {
-                                    b2.Property<Guid>("VoluunterDetailsVoluunterId")
-                                        .HasColumnType("uuid");
-
-                                    b2.Property<int>("Id")
-                                        .ValueGeneratedOnAdd()
-                                        .HasColumnType("integer");
-
-                                    b2.Property<string>("Description")
-                                        .IsRequired()
-                                        .HasMaxLength(2000)
-                                        .HasColumnType("character varying(2000)");
-
-                                    b2.Property<string>("Title")
-                                        .IsRequired()
-                                        .HasMaxLength(100)
-                                        .HasColumnType("character varying(100)");
-
-                                    b2.HasKey("VoluunterDetailsVoluunterId", "Id")
-                                        .HasName("pk_voluunters");
-
-                                    b2.ToTable("voluunters", (string)null);
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("VoluunterDetailsVoluunterId")
-                                        .HasConstraintName("fk_voluunters_voluunters_voluunter_details_voluunter_id");
-                                });
-
-                            b1.OwnsMany("VolunterProg.Domain.Voluunters.Voluunter.Details#VolunterProg.Domain.Voluunters.VoluunterDetails.SocialMedias#VolunterProg.Domain.Voluunters.SocialMedia", "SocialMedias", b2 =>
+                            b1.OwnsMany("VolunterProg.Domain.Voluunters.SocialMedia", "SocialMedias", b2 =>
                                 {
                                     b2.Property<Guid>("VoluunterDetailsVoluunterId")
                                         .HasColumnType("uuid");
@@ -344,7 +317,36 @@ namespace VolunterProg.Infrastructure.Migrations
                                     b2.HasKey("VoluunterDetailsVoluunterId", "Id")
                                         .HasName("pk_voluunters");
 
-                                    b2.ToTable("voluunters", (string)null);
+                                    b2.ToTable("voluunters");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("VoluunterDetailsVoluunterId")
+                                        .HasConstraintName("fk_voluunters_voluunters_voluunter_details_voluunter_id");
+                                });
+
+                            b1.OwnsMany("VolunterProg.Domain.Voluunters.Requisite", "Requisites", b2 =>
+                                {
+                                    b2.Property<Guid>("VoluunterDetailsVoluunterId")
+                                        .HasColumnType("uuid");
+
+                                    b2.Property<int>("Id")
+                                        .ValueGeneratedOnAdd()
+                                        .HasColumnType("integer");
+
+                                    b2.Property<string>("Description")
+                                        .IsRequired()
+                                        .HasMaxLength(2000)
+                                        .HasColumnType("character varying(2000)");
+
+                                    b2.Property<string>("Title")
+                                        .IsRequired()
+                                        .HasMaxLength(100)
+                                        .HasColumnType("character varying(100)");
+
+                                    b2.HasKey("VoluunterDetailsVoluunterId", "Id")
+                                        .HasName("pk_voluunters");
+
+                                    b2.ToTable("voluunters");
 
                                     b2.WithOwner()
                                         .HasForeignKey("VoluunterDetailsVoluunterId")
