@@ -31,6 +31,7 @@ public class Pet
     public bool IsVaccinated { get; private set; } = default!;
     public PetStatus Status { get; private set; } = default!;
     public List<Requisite> Requisites { get; private set; } = [];
+    public List<PetPhoto> PetPhotos { get; private set; } = [];
     public string DateOfCreate { get; private set; } = default!;
     public static Result<Pet> Create(PetId id,string fullName, string emailAddress)
     {
