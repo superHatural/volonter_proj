@@ -2,14 +2,14 @@
 
 namespace VolunterProg.Domain.Voluunters;
 
-public class Pet
+public class Pet: Shared.Entity<PetId>
 {
-    public Pet()
+    public Pet(PetId id) : base(id)
     {
         
     }
 
-    private Pet(PetId id, string name, string description)
+    private Pet(PetId id, string name, string description):base(id)
     {
         Id = id;
         Name = name;
@@ -22,7 +22,7 @@ public class Pet
     public string Species { get; private set; } = default!;
     public string Color { get; private set; } = default!;
     public string HealthInfo{ get; private set; } = default!;
-    public string Address { get; private set; } = default!;
+    public Address Address { get; private set; } = default!;
     public string Weight { get; private set; } = default!;
     public string Height { get; private set; } = default!;
     public string PhoneNumber { get; private set; } = default!;
@@ -30,8 +30,7 @@ public class Pet
     public string BirthDate { get; private set; } = default!;
     public bool IsVaccinated { get; private set; } = default!;
     public PetStatus Status { get; private set; } = default!;
-    public List<Requisite> Requisites { get; private set; } = [];
-    public List<PetPhoto> PetPhotos { get; private set; } = [];
+    public PetDetails? Details { get; private set; } 
     public string DateOfCreate { get; private set; } = default!;
     public static Result<Pet> Create(PetId id,string fullName, string emailAddress)
     {
@@ -39,8 +38,7 @@ public class Pet
             return Result.Failure<Pet>($"Full name is required.");
         if (string.IsNullOrEmpty(emailAddress))
             return Result.Failure<Pet>($"Email is required.");
-        var pet = new Pet(id, fullName, emailAddress);
-        return Result.Success(pet);
+        return Result.Success(new Pet(id, fullName, emailAddress));
     }
 }
 

@@ -4,8 +4,8 @@ namespace VolunterProg.Domain.Voluunters;
 
 public record PetPhoto
 {
-    public string Path { get; private set; } = default!;
-    public bool IsMainImage { get; private set; } = default!;
+    public string Path { get;  } = default!;
+    public bool IsMainImage { get;  } = default!;
 
     private PetPhoto(string path, bool isMainImage)
     {
@@ -17,7 +17,6 @@ public record PetPhoto
     {
         if (string.IsNullOrEmpty(path))
             return Result.Failure<PetPhoto>($"Path is required.");
-        var petPhoto = new PetPhoto(path, isMainImage);
-        return Result.Success(petPhoto);
+        return Result.Success(new PetPhoto(path, isMainImage));
     }
 }
