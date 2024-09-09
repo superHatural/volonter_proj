@@ -29,46 +29,15 @@ namespace VolunterProg.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<string>("BirthDate")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("birth_date");
-
                     b.Property<string>("Breed")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
                         .HasColumnName("breed");
 
-                    b.Property<string>("Color")
-                        .IsRequired()
+                    b.Property<int>("Height")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("color");
-
-                    b.Property<string>("DateOfCreate")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("date_of_create");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("character varying(2000)")
-                        .HasColumnName("description");
-
-                    b.Property<string>("HealthInfo")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("character varying(2000)")
-                        .HasColumnName("health_info");
-
-                    b.Property<string>("Height")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
+                        .HasColumnType("integer")
                         .HasColumnName("height");
 
                     b.Property<bool>("IsCastrated")
@@ -78,18 +47,6 @@ namespace VolunterProg.Infrastructure.Migrations
                     b.Property<bool>("IsVaccinated")
                         .HasColumnType("boolean")
                         .HasColumnName("is_vaccinated");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("name");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("phone_number");
 
                     b.Property<string>("Species")
                         .IsRequired()
@@ -102,10 +59,9 @@ namespace VolunterProg.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("status");
 
-                    b.Property<string>("Weight")
-                        .IsRequired()
+                    b.Property<int>("Weight")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
+                        .HasColumnType("integer")
                         .HasColumnName("weight");
 
                     b.Property<Guid?>("volunter_id")
@@ -141,6 +97,87 @@ namespace VolunterProg.Infrastructure.Migrations
                                 .HasColumnName("street");
                         });
 
+                    b.ComplexProperty<Dictionary<string, object>>("BirthDate", "VolunterProg.Domain.Voluunters.Pet.BirthDate#Date", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("DateTime")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("character varying(100)")
+                                .HasColumnName("birth_date");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("Color", "VolunterProg.Domain.Voluunters.Pet.Color#NotEmptyVo", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("character varying(100)")
+                                .HasColumnName("color");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("DateOfCreate", "VolunterProg.Domain.Voluunters.Pet.DateOfCreate#Date", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("DateTime")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("character varying(100)")
+                                .HasColumnName("date_of_create");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("Description", "VolunterProg.Domain.Voluunters.Pet.Description#NotEmptyVo", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .ValueGeneratedOnUpdateSometimes()
+                                .HasMaxLength(2000)
+                                .HasColumnType("character varying(2000)")
+                                .HasColumnName("description");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("HealthInfo", "VolunterProg.Domain.Voluunters.Pet.HealthInfo#NotEmptyVo", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .ValueGeneratedOnUpdateSometimes()
+                                .HasMaxLength(2000)
+                                .HasColumnType("character varying(2000)")
+                                .HasColumnName("description");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("Name", "VolunterProg.Domain.Voluunters.Pet.Name#NotEmptyVo", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .ValueGeneratedOnUpdateSometimes()
+                                .HasMaxLength(100)
+                                .HasColumnType("character varying(100)")
+                                .HasColumnName("phone_number");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("PhoneNumber", "VolunterProg.Domain.Voluunters.Pet.PhoneNumber#Phone", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("PhoneNumber")
+                                .IsRequired()
+                                .ValueGeneratedOnUpdateSometimes()
+                                .HasMaxLength(100)
+                                .HasColumnType("character varying(100)")
+                                .HasColumnName("phone_number");
+                        });
+
                     b.HasKey("Id")
                         .HasName("pk_pets");
 
@@ -156,34 +193,60 @@ namespace VolunterProg.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("character varying(2000)")
-                        .HasColumnName("description");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("email");
-
                     b.Property<int>("Experience")
                         .HasMaxLength(2000)
                         .HasColumnType("integer")
                         .HasColumnName("experience");
 
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("full_name");
+                    b.ComplexProperty<Dictionary<string, object>>("Description", "VolunterProg.Domain.Voluunters.Voluunter.Description#NotEmptyVo", b1 =>
+                        {
+                            b1.IsRequired();
 
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("character varying(2000)")
-                        .HasColumnName("phone_number");
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(2000)
+                                .HasColumnType("character varying(2000)")
+                                .HasColumnName("description");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("Email", "VolunterProg.Domain.Voluunters.Voluunter.Email#Email", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("EmailAddress")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("character varying(100)")
+                                .HasColumnName("email");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("FullName", "VolunterProg.Domain.Voluunters.Voluunter.FullName#FullName", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("FirstName")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("character varying(100)")
+                                .HasColumnName("first_name");
+
+                            b1.Property<string>("LastName")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("character varying(100)")
+                                .HasColumnName("last_name");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("PhoneNumber", "VolunterProg.Domain.Voluunters.Voluunter.PhoneNumber#Phone", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("PhoneNumber")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("character varying(100)")
+                                .HasColumnName("phone_number");
+                        });
 
                     b.HasKey("Id")
                         .HasName("pk_voluunters");

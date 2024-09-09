@@ -9,7 +9,7 @@ public class Voluunter: Shared.Entity<VoluunterId>
         
     }
 
-    private Voluunter(VoluunterId id, string fullName, string emailAddress)
+    private Voluunter(VoluunterId id, FullName fullName, Email emailAddress)
     : base(id)
     {
         Id = id;
@@ -19,11 +19,11 @@ public class Voluunter: Shared.Entity<VoluunterId>
     private readonly List<Pet> _pets = [];
     
     public VoluunterId Id { get; private set; }
-    public string FullName { get; private set; } = default!;
-    public string Email { get; private set; } = default!;
-    public string Description { get; private set; } = default!;
+    public FullName FullName { get; private set; } = default!;
+    public Email Email { get; private set; } = default!;
+    public NotEmptyVo Description { get; private set; } = default!;
     public int Experience { get; private set; } = default!;
-    public string PhoneNumber { get; private set; } = default!;
+    public Phone PhoneNumber { get; private set; } = default!;
     public VoluunterDetails Details { get; private set; }
     public IReadOnlyList<Pet> Pets  => _pets;
     public int NumberOfFoundAHome => FindNumberOfStatus(PetStatus.FoundAHome);
@@ -38,12 +38,8 @@ public class Voluunter: Shared.Entity<VoluunterId>
         return value.Count();
     }
 
-    public static Result<Voluunter> Create(VoluunterId id,string fullName, string emailAddress)
+    public static Result<Voluunter> Create(VoluunterId id,FullName fullName, Email emailAddress)
     {
-        if (string.IsNullOrEmpty(fullName))
-            return Result.Failure<Voluunter>($"Full name is required.");
-        if (string.IsNullOrEmpty(emailAddress))
-            return Result.Failure<Voluunter>($"Email is required.");
         return Result.Success(new Voluunter(id, fullName, emailAddress));
     }
     
