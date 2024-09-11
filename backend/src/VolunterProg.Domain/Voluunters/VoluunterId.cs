@@ -10,4 +10,5 @@ public record VoluunterId
     public static VoluunterId NewValuunterId() => new(Guid.NewGuid());
     public static VoluunterId Empty() => new(Guid.Empty);
     public static VoluunterId Create(Guid id) => new VoluunterId(id);
+    public static implicit operator Guid(VoluunterId id) => id.Value;
 }

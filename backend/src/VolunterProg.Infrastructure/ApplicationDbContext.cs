@@ -8,6 +8,7 @@ namespace VolunterProg.Infrastructure;
 public class ApplicationDbContext(IConfiguration configuration) : DbContext
 {
     public DbSet<Voluunter> Voluunters => Set<Voluunter>();
+    public DbSet<Species> Species => Set<Species>();
     const string DATABASE = "Database";
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

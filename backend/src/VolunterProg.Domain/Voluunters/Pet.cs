@@ -17,9 +17,8 @@ public class Pet: Shared.Entity<PetId>
     }
     public PetId Id { get; private set; }
     public NotEmptyVo Name { get; private set; } = default!;
-    public string Breed { get; private set; } = default!;
     public NotEmptyVo Description { get; private set; } = default!;
-    public string Species { get; private set; } = default!;
+    public SpeciesDetails SpeciesDetails { get; private set; } = default!;
     public NotEmptyVo Color { get; private set; } = default!;
     public NotEmptyVo HealthInfo{ get; private set; } = default!;
     public Address Address { get; private set; } = default!;
@@ -36,11 +35,4 @@ public class Pet: Shared.Entity<PetId>
     {
         return Result.Success(new Pet(id, name, emailAddress));
     }
-}
-
-public enum PetStatus
-{
-    NeedsHelp,
-    LookingForAHome,
-    FoundAHome,
 }
