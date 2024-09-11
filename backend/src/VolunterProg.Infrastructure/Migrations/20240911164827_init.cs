@@ -12,6 +12,18 @@ namespace VolunterProg.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "species",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_species", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "voluunters",
                 columns: table => new
                 {
@@ -30,12 +42,28 @@ namespace VolunterProg.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "breeds",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    species_id = table.Column<Guid>(type: "uuid", nullable: true),
+                    title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_breeds", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_breeds_species_species_id",
+                        column: x => x.species_id,
+                        principalTable: "species",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "pets",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    breed = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    species = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     weight = table.Column<int>(type: "integer", maxLength: 100, nullable: false),
                     height = table.Column<int>(type: "integer", maxLength: 100, nullable: false),
                     is_castrated = table.Column<bool>(type: "boolean", nullable: false),
@@ -51,6 +79,8 @@ namespace VolunterProg.Infrastructure.Migrations
                     date_of_create = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
                     phone_number = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    breed_id = table.Column<Guid>(type: "uuid", maxLength: 100, nullable: false),
+                    species_id = table.Column<Guid>(type: "uuid", maxLength: 100, nullable: false),
                     Details = table.Column<string>(type: "jsonb", nullable: true)
                 },
                 constraints: table =>
@@ -64,6 +94,11 @@ namespace VolunterProg.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "ix_breeds_species_id",
+                table: "breeds",
+                column: "species_id");
+
+            migrationBuilder.CreateIndex(
                 name: "ix_pets_volunter_id",
                 table: "pets",
                 column: "volunter_id");
@@ -73,7 +108,13 @@ namespace VolunterProg.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "breeds");
+
+            migrationBuilder.DropTable(
                 name: "pets");
+
+            migrationBuilder.DropTable(
+                name: "species");
 
             migrationBuilder.DropTable(
                 name: "voluunters");

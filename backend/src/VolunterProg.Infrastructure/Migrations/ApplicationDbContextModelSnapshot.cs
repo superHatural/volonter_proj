@@ -23,17 +23,41 @@ namespace VolunterProg.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("VolunterProg.Domain.Voluunters.Pet", b =>
+            modelBuilder.Entity("VolunterProg.Domain.Voluunters.Breed", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<string>("Breed")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("breed");
+                    b.Property<Guid?>("species_id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("species_id");
+
+                    b.ComplexProperty<Dictionary<string, object>>("Title", "VolunterProg.Domain.Voluunters.Breed.Title#NotEmptyVo", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("character varying(100)")
+                                .HasColumnName("title");
+                        });
+
+                    b.HasKey("Id")
+                        .HasName("pk_breeds");
+
+                    b.HasIndex("species_id")
+                        .HasDatabaseName("ix_breeds_species_id");
+
+                    b.ToTable("breeds", (string)null);
+                });
+
+            modelBuilder.Entity("VolunterProg.Domain.Voluunters.Pet", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<int>("Height")
                         .HasMaxLength(100)
@@ -47,12 +71,6 @@ namespace VolunterProg.Infrastructure.Migrations
                     b.Property<bool>("IsVaccinated")
                         .HasColumnType("boolean")
                         .HasColumnName("is_vaccinated");
-
-                    b.Property<string>("Species")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("species");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -178,6 +196,21 @@ namespace VolunterProg.Infrastructure.Migrations
                                 .HasColumnName("phone_number");
                         });
 
+                    b.ComplexProperty<Dictionary<string, object>>("SpeciesDetails", "VolunterProg.Domain.Voluunters.Pet.SpeciesDetails#SpeciesDetails", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<Guid>("BreedId")
+                                .HasMaxLength(100)
+                                .HasColumnType("uuid")
+                                .HasColumnName("breed_id");
+
+                            b1.Property<Guid>("SpeciesId")
+                                .HasMaxLength(100)
+                                .HasColumnType("uuid")
+                                .HasColumnName("species_id");
+                        });
+
                     b.HasKey("Id")
                         .HasName("pk_pets");
 
@@ -185,6 +218,29 @@ namespace VolunterProg.Infrastructure.Migrations
                         .HasDatabaseName("ix_pets_volunter_id");
 
                     b.ToTable("pets", (string)null);
+                });
+
+            modelBuilder.Entity("VolunterProg.Domain.Voluunters.Species", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.ComplexProperty<Dictionary<string, object>>("Title", "VolunterProg.Domain.Voluunters.Species.Title#NotEmptyVo", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("character varying(100)")
+                                .HasColumnName("title");
+                        });
+
+                    b.HasKey("Id")
+                        .HasName("pk_species");
+
+                    b.ToTable("species", (string)null);
                 });
 
             modelBuilder.Entity("VolunterProg.Domain.Voluunters.Voluunter", b =>
@@ -252,6 +308,14 @@ namespace VolunterProg.Infrastructure.Migrations
                         .HasName("pk_voluunters");
 
                     b.ToTable("voluunters", (string)null);
+                });
+
+            modelBuilder.Entity("VolunterProg.Domain.Voluunters.Breed", b =>
+                {
+                    b.HasOne("VolunterProg.Domain.Voluunters.Species", null)
+                        .WithMany("Breeds")
+                        .HasForeignKey("species_id")
+                        .HasConstraintName("fk_breeds_species_species_id");
                 });
 
             modelBuilder.Entity("VolunterProg.Domain.Voluunters.Pet", b =>
@@ -423,6 +487,11 @@ namespace VolunterProg.Infrastructure.Migrations
 
                     b.Navigation("Details")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("VolunterProg.Domain.Voluunters.Species", b =>
+                {
+                    b.Navigation("Breeds");
                 });
 
             modelBuilder.Entity("VolunterProg.Domain.Voluunters.Voluunter", b =>

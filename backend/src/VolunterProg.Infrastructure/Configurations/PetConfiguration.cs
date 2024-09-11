@@ -22,11 +22,22 @@ public class PetConfiguration: IEntityTypeConfiguration<Pet>
                 .HasMaxLength(Constants.MAX_SHORT_TEXT_LENGTH)
                 .HasColumnName("phone_number");
         });
-        
-        builder.Property(p => p.Breed)
-            .IsRequired()
-            .HasMaxLength(Constants.MAX_SHORT_TEXT_LENGTH);
-        
+
+        builder.ComplexProperty(p => p.SpeciesDetails, sdb =>
+        {
+            sdb.Property(sib => sib.SpeciesId)
+                .HasConversion(
+                    id => id.Value,
+                    value => SpeciesId.Create(value))
+                .IsRequired()
+                .HasMaxLength(Constants.MAX_SHORT_TEXT_LENGTH)
+                .HasColumnName("species_id");
+            sdb.Property(bib => bib.BreedId)
+                .IsRequired()
+                .HasMaxLength(Constants.MAX_SHORT_TEXT_LENGTH)
+                .HasColumnName("breed_id");
+        });
+
         builder.ComplexProperty(p => p.Description, db =>
         {
             db.Property(d => d.Value)
@@ -34,9 +45,6 @@ public class PetConfiguration: IEntityTypeConfiguration<Pet>
                 .HasMaxLength(Constants.MAX_LARGE_TEXT_LENGTH)
                 .HasColumnName("description");
         });
-        
-        builder.Property(p => p.Species)
-            .HasMaxLength(Constants.MAX_SHORT_TEXT_LENGTH);
         
         builder.ComplexProperty(v => v.PhoneNumber, pnb =>
         {
