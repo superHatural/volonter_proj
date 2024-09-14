@@ -36,14 +36,13 @@ public class CreateVoluunterHandler
         var phoneResult = Phone.Create(request.PhoneNumber);
         if (phoneResult.IsFailure)
             return phoneResult.Error;
-        
-        var voluunterDetailsResult = VoluunterDetails.Create(
-            request.RequisiteTitle, 
-            request.RequisiteDescription,
-            request.SocMedTitle,
-            request.SocMedUrl);
-        if (voluunterDetailsResult.IsFailure)
-            return voluunterDetailsResult.Error;
+        var voluunterDetailsResult = new VoluunterDetails(
+            new List<Requisite>
+                {Requisite.Create(request.RequisiteTitle, request.RequisiteDescription).Value},
+            new List<SocialMedia> 
+                {SocialMedia.Create(request.SocMedTitle, request.SocMedUrl).Value});
+
+
         
         var voluunterResult = Domain.Voluunters.Voluunter.Create(
             voluunterId, 
@@ -52,7 +51,7 @@ public class CreateVoluunterHandler
             descriptionResult.Value,
             exp,
             phoneResult.Value, 
-            voluunterDetailsResult.Value);
+            voluunterDetailsResult);
         if (voluunterResult.IsFailure)
             return voluunterResult.Error;
         

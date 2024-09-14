@@ -5,22 +5,13 @@ namespace VolunterProg.Domain.Voluunters;
 
 public record VoluunterDetails
 {
-    private readonly List<Requisite> _requisites = [];
-    private readonly List<SocialMedia> _socialMedia = [];
-    public IReadOnlyList<Requisite> Requisites => _requisites;
-    public IReadOnlyList<SocialMedia> SocialMedias => _socialMedia;
+    public IReadOnlyList<Requisite> Requisites ;
+    public IReadOnlyList<SocialMedia> SocialMedias ;
     private VoluunterDetails() { }
-    private VoluunterDetails(Requisite requisite, SocialMedia socialMedia)
+    public VoluunterDetails(IEnumerable<Requisite> requisites, IEnumerable<SocialMedia> socialMedias)
     {
-        _requisites.Add(requisite);
-        _socialMedia.Add(socialMedia);
+       Requisites = requisites.ToList();
+       SocialMedias = socialMedias.ToList();
     }
-
-    public static Result<VoluunterDetails, Error> Create(string reqTitle, string reqDescription, string socMedTitle,
-        string socMedUrl)
-    {
-        return new VoluunterDetails(
-            Requisite.Create(reqTitle, reqDescription).Value,
-            SocialMedia.Create(socMedTitle, socMedUrl).Value); 
-    }
+    
 }
