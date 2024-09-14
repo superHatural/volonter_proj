@@ -14,12 +14,12 @@ public class VoluuntersRepository : IVoluuntersRepository
         _dbContext = dbContext;
     }
 
-    public async Task<Result<Guid>> Add(Voluunter voluunter, CancellationToken cancellationToken)
+    public async Task<Guid> Add(Voluunter voluunter, CancellationToken cancellationToken)
     {
         await _dbContext.Voluunters.AddAsync(voluunter, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
         
-        return Result.Success((Guid)voluunter.Id);
+        return voluunter.Id;
     }
 
     public async Task<Result<Voluunter, Error>> GetById(VoluunterId voluunterId, CancellationToken cancellationToken)

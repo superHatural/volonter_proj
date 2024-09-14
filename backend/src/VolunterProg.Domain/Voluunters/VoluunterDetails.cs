@@ -1,24 +1,26 @@
 using CSharpFunctionalExtensions;
+using VolunterProg.Domain.Shared;
 
 namespace VolunterProg.Domain.Voluunters;
 
 public record VoluunterDetails
 {
-    public List<Requisite> Requisites { get;  }
-    public List<SocialMedia> SocialMedias { get;  }
+    private readonly List<Requisite> _requisites = [];
+    private readonly List<SocialMedia> _socialMedia = [];
+    public IReadOnlyList<Requisite> Requisites => _requisites;
+    public IReadOnlyList<SocialMedia> SocialMedias => _socialMedia;
     private VoluunterDetails() { }
-    private VoluunterDetails(string reqTitle, string reqDescription, string socMedTitle,
-        string socMedUrl)
+    private VoluunterDetails(Requisite requisite, SocialMedia socialMedia)
     {
-        Requisites = new List<Requisite>();
-        Requisites.Add(Requisite.Create(reqTitle, reqDescription).Value);
-        SocialMedias = new List<SocialMedia>();
-        SocialMedias.Add(SocialMedia.Create(socMedTitle, socMedUrl).Value);
+        _requisites.Add(requisite);
+        _socialMedia.Add(socialMedia);
     }
 
-    public static Result<VoluunterDetails> Create(string reqTitle, string reqDescription, string socMedTitle,
+    public static Result<VoluunterDetails, Error> Create(string reqTitle, string reqDescription, string socMedTitle,
         string socMedUrl)
     {
-        return Result.Success(new VoluunterDetails(reqTitle, reqDescription, socMedTitle, socMedUrl)); 
+        return new VoluunterDetails(
+            Requisite.Create(reqTitle, reqDescription).Value,
+            SocialMedia.Create(socMedTitle, socMedUrl).Value); 
     }
 }
