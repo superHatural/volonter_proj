@@ -13,7 +13,7 @@ using VolunterProg.Infrastructure;
 namespace VolunterProg.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240911164827_init")]
+    [Migration("20240914155406_init")]
     partial class init
     {
         /// <inheritdoc />

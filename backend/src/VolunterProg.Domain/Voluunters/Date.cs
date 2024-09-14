@@ -1,4 +1,5 @@
 using CSharpFunctionalExtensions;
+using VolunterProg.Domain.Shared;
 
 namespace VolunterProg.Domain.Voluunters;
 
@@ -10,10 +11,12 @@ public record Date
         DateTime = dateTime;
     }
 
-    public static Result<Date> Create(string dateTime)
+    public static Result<Date,Error> Create(string dateTime)
     {
-        if (!System.DateTime.TryParse(dateTime, out var time) || string.IsNullOrEmpty(dateTime))
-            return Result.Failure<Date>($"DateTime is invalid.");
-        return Result.Success(new Date(dateTime));
+        if (string.IsNullOrEmpty(dateTime))
+            return Errors.General.ValueIsRequired("Date");
+        if (!System.DateTime.TryParse(dateTime, out var time))
+            return Errors.General.ValueIsInvalid("Date");
+        return new Date(dateTime);
     }
 }

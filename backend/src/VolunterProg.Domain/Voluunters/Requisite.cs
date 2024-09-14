@@ -1,4 +1,5 @@
 using CSharpFunctionalExtensions;
+using VolunterProg.Domain.Shared;
 
 namespace VolunterProg.Domain.Voluunters;
 
@@ -12,12 +13,12 @@ public record Requisite
         Title = title;
         Description = description;
     }
-    public static Result<Requisite> Create(string title, string description)
+    public static Result<Requisite, Error> Create(string title, string description)
     {
         if (string.IsNullOrEmpty(title))
-            return Result.Failure<Requisite>($"Title is required.");
+            return Errors.General.ValueIsRequired("Title");
         if (string.IsNullOrEmpty(description))
-            return Result.Failure<Requisite>($"Description is required.");
-        return Result.Success(new Requisite(title, description));
+            return Errors.General.ValueIsRequired("Description");
+        return new Requisite(title, description);
     }
 }

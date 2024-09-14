@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
 using CSharpFunctionalExtensions;
+using VolunterProg.Domain.Shared;
 
 namespace VolunterProg.Domain.Voluunters;
 
@@ -11,12 +12,14 @@ public record Email
         EmailAddress = emailAddress;
     }
 
-    public static Result<Email> Create(string email)
+    public static Result<Email,Error> Create(string email)
     {
         var pattern = @"\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*";
+        if (string.IsNullOrEmpty(email))
+            return Errors.General.ValueIsRequired("EmailAddress");
         if (Regex.Match(email, pattern).Success)
-            return Result.Success(new Email(email));
+            return new Email(email);
         else
-            return Result.Failure<Email>("Invalid email address");
+            return Errors.General.ValueIsInvalid("EmailAddress");
     }
 }

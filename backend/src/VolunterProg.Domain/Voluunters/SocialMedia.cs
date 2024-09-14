@@ -1,4 +1,5 @@
 using CSharpFunctionalExtensions;
+using VolunterProg.Domain.Shared;
 
 namespace VolunterProg.Domain.Voluunters;
 
@@ -11,12 +12,12 @@ public record SocialMedia
         Title = title;
         Url = url;
     }
-    public static Result<SocialMedia> Create(string title, string url)
+    public static Result<SocialMedia, Error> Create(string title, string url)
     {
         if (string.IsNullOrEmpty(title))
-            return Result.Failure<SocialMedia>($"Title is required.");
+            return Errors.General.ValueIsRequired("Title");
         if (string.IsNullOrEmpty(url))
-            return Result.Failure<SocialMedia>($"Description is required.");
-        return Result.Success(new SocialMedia(title, url));
+            return Errors.General.ValueIsRequired("Url");
+        return new SocialMedia(title, url);
     }
 }

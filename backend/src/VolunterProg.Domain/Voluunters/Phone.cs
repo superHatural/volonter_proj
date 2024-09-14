@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
 using CSharpFunctionalExtensions;
+using VolunterProg.Domain.Shared;
 
 namespace VolunterProg.Domain.Voluunters;
 
@@ -11,16 +12,18 @@ public record Phone
         PhoneNumber = phoneNumber;
     }
 
-    public static Result<Phone> Create(string phoneNumber)
+    public static Result<Phone, Error> Create(string phoneNumber)
     {
         var pattern = @"((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}";
+        if (string.IsNullOrEmpty(phoneNumber))
+            return Errors.General.ValueIsRequired("phoneNumber");
         if (Regex.Match(phoneNumber, pattern).Success)
         {
-            return Result.Success(new Phone(phoneNumber));
+            return new Phone(phoneNumber);
         }
         else
         {
-            return Result.Failure<Phone>("Invalid phone number");
+            return Errors.General.ValueIsInvalid("Invalid phone number");
         }
         
 

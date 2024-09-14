@@ -1,5 +1,6 @@
 using System.Threading.Tasks.Sources;
 using CSharpFunctionalExtensions;
+using VolunterProg.Domain.Shared;
 
 namespace VolunterProg.Domain.Voluunters;
 
@@ -11,10 +12,10 @@ public record NotEmptyVo
         Value = value;
     }
 
-    public static Result<NotEmptyVo> Create(string value)
+    public static Result<NotEmptyVo, Error> Create(string value)
     {
         if (string.IsNullOrEmpty(value))
-            return Result.Failure<NotEmptyVo>($"Cannot be null or empty.");
-        return Result.Success(new NotEmptyVo(value));
+            return Errors.General.ValueIsRequired("lastName");
+        return new NotEmptyVo(value);
     }
 }

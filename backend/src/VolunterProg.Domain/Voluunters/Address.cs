@@ -1,4 +1,5 @@
 using CSharpFunctionalExtensions;
+using VolunterProg.Domain.Shared;
 
 namespace VolunterProg.Domain.Voluunters;
 
@@ -17,17 +18,17 @@ public record Address
         Street = street;
     }
     
-    public static Result<Address> Create(string city, string country, string postalCode, string street)
+    public static Result<Address, Error> Create(string city, string country, string postalCode, string street)
     {
         if (string.IsNullOrEmpty(city))
-            return Result.Failure<Address>($"City is required.");
+            return Errors.General.ValueIsRequired("City");
         if (string.IsNullOrEmpty(country))
-            return Result.Failure<Address>($"Country is required.");
+            return Errors.General.ValueIsRequired("Country");
         if (string.IsNullOrEmpty(postalCode))
-            return Result.Failure<Address>($"Postal Code is required.");
+            return Errors.General.ValueIsRequired("PostalCode");
         if (string.IsNullOrEmpty(street))
-            return Result.Failure<Address>($"Street is required.");
-        return Result.Success(new Address(city, country, postalCode, street));
+            return Errors.General.ValueIsRequired("Street");
+        return new Address(city, country, postalCode, street);
     }
     
 }
