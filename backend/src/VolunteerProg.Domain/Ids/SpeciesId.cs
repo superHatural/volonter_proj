@@ -1,4 +1,4 @@
-namespace VolunteerProg.Domain.Species;
+namespace VolunteerProg.Domain.Ids;
 
 public record SpeciesId
 {
@@ -8,6 +8,7 @@ public record SpeciesId
     {
         Value = value;
     }
+
     public static SpeciesId NewSpeciesId() => new(Guid.NewGuid());
     public static SpeciesId Empty() => new(Guid.Empty);
     public static SpeciesId Create(Guid id) => new SpeciesId(id);

@@ -1,17 +1,18 @@
 using CSharpFunctionalExtensions;
 using VolunteerProg.Domain.Shared;
 
-namespace VolunteerProg.Domain.Volunteers;
+namespace VolunteerProg.Domain.ValueObjects;
 
 public record Date
 {
     public string DateTime { get; } = default!;
+
     private Date(string dateTime)
     {
         DateTime = dateTime;
     }
 
-    public static Result<Date,Error> Create(string dateTime)
+    public static Result<Date, Error> Create(string dateTime)
     {
         if (string.IsNullOrEmpty(dateTime))
             return Errors.General.ValueIsRequired("Date");

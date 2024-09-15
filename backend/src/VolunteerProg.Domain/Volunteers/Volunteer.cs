@@ -1,11 +1,14 @@
+using System.ComponentModel.DataAnnotations;
 using CSharpFunctionalExtensions;
+using VolunteerProg.Domain.Ids;
 using VolunteerProg.Domain.Shared;
+using VolunteerProg.Domain.ValueObjects;
 
 namespace VolunteerProg.Domain.Volunteers;
 
-public class Volunteer : Shared.Entity<VolunteerId>
+public sealed class Volunteer : Shared.Entity<VolunteerId>
 {
-    public Volunteer(VolunteerId id) : base(id)
+    private Volunteer(VolunteerId id) : base(id)
     {
     }
 
@@ -15,7 +18,8 @@ public class Volunteer : Shared.Entity<VolunteerId>
         NotEmptyVo description,
         int experience,
         Phone phoneNumber,
-        VolunteerDetails? details)
+        SocialMediasDetails? socMedDetails,
+        RequisiteDetails? reqDetails)
         : base(id)
     {
         Id = id;
@@ -24,18 +28,21 @@ public class Volunteer : Shared.Entity<VolunteerId>
         Description = description;
         Experience = experience;
         PhoneNumber = phoneNumber;
-        Details = details!;
+        SocMedDetails = socMedDetails!;
+        ReqDetails = reqDetails!;
     }
 
     private readonly List<Pet> _pets = [];
-
+    
     public VolunteerId Id { get; private set; }
     public FullName FullName { get; private set; } = default!;
     public Email Email { get; private set; } = default!;
     public NotEmptyVo Description { get; private set; } = default!;
     public int Experience { get; private set; } = default!;
     public Phone PhoneNumber { get; private set; } = default!;
-    public VolunteerDetails Details { get; private set; }
+    public SocialMediasDetails SocMedDetails { get; private set; }
+    public RequisiteDetails ReqDetails { get; private set; }
+    
     public IReadOnlyList<Pet> Pets => _pets;
     public int NumberOfFoundAHome => FindNumberOfStatus(PetStatus.FoundAHome);
     public int NumberOfNeedsHelp => FindNumberOfStatus(PetStatus.NeedsHelp);
@@ -55,9 +62,10 @@ public class Volunteer : Shared.Entity<VolunteerId>
         NotEmptyVo description,
         int experience,
         Phone phoneNumber,
-        VolunteerDetails? details
+        SocialMediasDetails? socMedDetails,
+        RequisiteDetails? reqDetails
     )
     {
-        return new Volunteer(id, fullName, emailAddress, description, experience, phoneNumber, details);
+        return new Volunteer(id, fullName, emailAddress, description, experience, phoneNumber, socMedDetails, reqDetails);
     }
 }

@@ -1,13 +1,17 @@
+using VolunteerProg.Domain.ValueObjects;
+
 namespace VolunteerProg.Domain.Volunteers;
 
-public record PetDetails
+public record PetPhotoDetails
 {
-    public IReadOnlyList<PetPhoto> PetPhotos ;
-    public IReadOnlyList<Requisite> Requisites ;
-    private PetDetails() { }
-    public PetDetails(IEnumerable<PetPhoto> petPhotos, IEnumerable<Requisite> requisites)
+    public IReadOnlyList<PetPhoto> PetPhotos;
+
+    private PetPhotoDetails()
+    {
+    }
+
+    public PetPhotoDetails(IEnumerable<PetPhoto> petPhotos)
     {
         PetPhotos = petPhotos.ToList();
-        Requisites = requisites.ToList();
     }
 }

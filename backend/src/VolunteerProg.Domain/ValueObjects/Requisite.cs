@@ -1,11 +1,11 @@
 using CSharpFunctionalExtensions;
 using VolunteerProg.Domain.Shared;
 
-namespace VolunteerProg.Domain.Volunteers;
+namespace VolunteerProg.Domain.ValueObjects;
 
 public record Requisite
 {
-    public string Title { get;  } = default!;
+    public string Title { get; } = default!;
     public string Description { get; } = default!;
 
     private Requisite(string title, string description)
@@ -13,6 +13,7 @@ public record Requisite
         Title = title;
         Description = description;
     }
+
     public static Result<Requisite, Error> Create(string title, string description)
     {
         if (string.IsNullOrEmpty(title))

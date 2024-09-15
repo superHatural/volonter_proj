@@ -1,7 +1,7 @@
 using CSharpFunctionalExtensions;
-using VolunteerProg.Domain.Species;
+using VolunteerProg.Domain.Ids;
 
-namespace VolunteerProg.Domain.Volunteers;
+namespace VolunteerProg.Domain.Species;
 
 public record SpeciesDetails
 {
@@ -10,7 +10,8 @@ public record SpeciesDetails
         SpeciesId = speciesId;
         BreedId = breedId;
     }
-    public SpeciesId SpeciesId { get; } 
+
+    public SpeciesId SpeciesId { get; }
     public Guid BreedId { get; }
 
     public static Result<SpeciesDetails> Create(SpeciesId speciesId, BreedId breedId)

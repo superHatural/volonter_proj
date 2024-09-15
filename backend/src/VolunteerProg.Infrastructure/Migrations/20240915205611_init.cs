@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace VolunterProg.Infrastructure.Migrations
+namespace VolunteerProg.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class init : Migration
@@ -28,13 +28,14 @@ namespace VolunterProg.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    experience = table.Column<int>(type: "integer", maxLength: 2000, nullable: false),
+                    experience = table.Column<int>(type: "integer", nullable: false),
                     description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
                     email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     first_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     last_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     phone_number = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Details = table.Column<string>(type: "jsonb", nullable: false)
+                    ReqDetails = table.Column<string>(type: "jsonb", nullable: false),
+                    SocMedDetails = table.Column<string>(type: "jsonb", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -74,14 +75,17 @@ namespace VolunterProg.Infrastructure.Migrations
                     country = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     postal_code = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     street = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    birth_date = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    birth_date = table.Column<string>(type: "text", nullable: false),
                     color = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    date_of_create = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    date_of_create = table.Column<string>(type: "text", nullable: false),
                     description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
+                    health_info = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
+                    name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     phone_number = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    breed_id = table.Column<Guid>(type: "uuid", maxLength: 100, nullable: false),
-                    species_id = table.Column<Guid>(type: "uuid", maxLength: 100, nullable: false),
-                    Details = table.Column<string>(type: "jsonb", nullable: true)
+                    breed_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    species_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    PetPhotoDetails = table.Column<string>(type: "jsonb", nullable: true),
+                    RequisiteDetails = table.Column<string>(type: "jsonb", nullable: true)
                 },
                 constraints: table =>
                 {

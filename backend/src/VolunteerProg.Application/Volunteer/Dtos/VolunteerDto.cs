@@ -1,6 +1,6 @@
-namespace VolunteerProg.Application.Voluunter.CreateVoluunter;
+namespace VolunteerProg.Application.Volunteer.Dtos;
 
-public record CreateVolunteerRequest(
+public record VolunteerDto(
     string FirstName, 
     string LastName, 
     string Email, 
@@ -10,4 +10,4 @@ public record CreateVolunteerRequest(
     string? RequisiteTitle,
     string? RequisiteDescription,
     string? SocMedTitle,
-    string? SocMedUrl);
+    string? SocMedDescription);

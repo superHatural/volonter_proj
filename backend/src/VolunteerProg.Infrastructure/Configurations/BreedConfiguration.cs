@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using VolunteerProg.Domain.Ids;
 using VolunteerProg.Domain.Shared;
 using VolunteerProg.Domain.Species;
 
 namespace VolunteerProg.Infrastructure.Configurations;
 
-public class BreedConfiguration: IEntityTypeConfiguration<Breed>
+public class BreedConfiguration : IEntityTypeConfiguration<Breed>
 {
     public void Configure(EntityTypeBuilder<Breed> builder)
     {
@@ -22,6 +23,5 @@ public class BreedConfiguration: IEntityTypeConfiguration<Breed>
                 .HasMaxLength(Constants.MAX_SHORT_TEXT_LENGTH)
                 .HasColumnName("title");
         });
-        
     }
 }
