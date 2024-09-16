@@ -1,17 +1,19 @@
 using CSharpFunctionalExtensions;
 using VolunteerProg.Domain.Shared;
 
-namespace VolunteerProg.Domain.Volunteers;
+namespace VolunteerProg.Domain.ValueObjects;
 
 public record SocialMedia
 {
-    public string Title { get;  } = default!;
+    public string Title { get; } = default!;
     public string Url { get; } = default!;
+
     private SocialMedia(string title, string url)
     {
         Title = title;
         Url = url;
     }
+
     public static Result<SocialMedia, Error> Create(string title, string url)
     {
         if (string.IsNullOrEmpty(title))

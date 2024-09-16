@@ -5,8 +5,8 @@ namespace VolunteerProg.Domain.Volunteers;
 
 public record PetPhoto
 {
-    public string Path { get;  } = default!;
-    public bool IsMainImage { get;  } = default!;
+    public string Path { get; } = default!;
+    public bool IsMainImage { get; } = default!;
 
     private PetPhoto(string path, bool isMainImage)
     {

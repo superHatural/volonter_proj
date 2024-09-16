@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using VolunteerProg.Application.Voluunter;
+using VolunteerProg.Application.Volunteer;
 using VolunteerProg.Infrastructure.Repositories;
 
 namespace VolunteerProg.Infrastructure;

@@ -1,4 +1,6 @@
+using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Mvc;
+using VolunteerProg.API.Response;
 using VolunteerProg.Domain.Shared;
 
 namespace VolunteerProg.API.Extentions;
@@ -15,7 +17,8 @@ public static class ResponseExtentions
             ErrorType.Failure => StatusCodes.Status500InternalServerError,
             _ => StatusCodes.Status500InternalServerError
         };
-        return new ObjectResult(error)
+        var envelope = Envelope.Error(error);
+        return new ObjectResult(envelope)
         {
             StatusCode = statusCode
         };

@@ -1,11 +1,12 @@
 using CSharpFunctionalExtensions;
 using VolunteerProg.Domain.Shared;
 
-namespace VolunteerProg.Domain.Volunteers;
+namespace VolunteerProg.Domain.ValueObjects;
 
 public record NotEmptyVo
 {
-    public string Value { get;} = default!;
+    public string Value { get; } = default!;
+
     private NotEmptyVo(string value)
     {
         Value = value;

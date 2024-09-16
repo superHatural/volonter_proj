@@ -10,10 +10,10 @@ using VolunteerProg.Infrastructure;
 
 #nullable disable
 
-namespace VolunterProg.Infrastructure.Migrations
+namespace VolunteerProg.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240914184511_init")]
+    [Migration("20240915205611_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -147,8 +147,7 @@ namespace VolunterProg.Infrastructure.Migrations
 
                             b1.Property<string>("DateTime")
                                 .IsRequired()
-                                .HasMaxLength(100)
-                                .HasColumnType("character varying(100)")
+                                .HasColumnType("text")
                                 .HasColumnName("birth_date");
                         });
 
@@ -169,8 +168,7 @@ namespace VolunterProg.Infrastructure.Migrations
 
                             b1.Property<string>("DateTime")
                                 .IsRequired()
-                                .HasMaxLength(100)
-                                .HasColumnType("character varying(100)")
+                                .HasColumnType("text")
                                 .HasColumnName("date_of_create");
                         });
 
@@ -180,7 +178,6 @@ namespace VolunterProg.Infrastructure.Migrations
 
                             b1.Property<string>("Value")
                                 .IsRequired()
-                                .ValueGeneratedOnUpdateSometimes()
                                 .HasMaxLength(2000)
                                 .HasColumnType("character varying(2000)")
                                 .HasColumnName("description");
@@ -192,10 +189,9 @@ namespace VolunterProg.Infrastructure.Migrations
 
                             b1.Property<string>("Value")
                                 .IsRequired()
-                                .ValueGeneratedOnUpdateSometimes()
                                 .HasMaxLength(2000)
                                 .HasColumnType("character varying(2000)")
-                                .HasColumnName("description");
+                                .HasColumnName("health_info");
                         });
 
                     b.ComplexProperty<Dictionary<string, object>>("Name", "VolunteerProg.Domain.Volunteers.Pet.Name#NotEmptyVo", b1 =>
@@ -204,10 +200,9 @@ namespace VolunterProg.Infrastructure.Migrations
 
                             b1.Property<string>("Value")
                                 .IsRequired()
-                                .ValueGeneratedOnUpdateSometimes()
                                 .HasMaxLength(100)
                                 .HasColumnType("character varying(100)")
-                                .HasColumnName("phone_number");
+                                .HasColumnName("name");
                         });
 
                     b.ComplexProperty<Dictionary<string, object>>("PhoneNumber", "VolunteerProg.Domain.Volunteers.Pet.PhoneNumber#Phone", b1 =>
@@ -216,7 +211,6 @@ namespace VolunterProg.Infrastructure.Migrations
 
                             b1.Property<string>("PhoneNumber")
                                 .IsRequired()
-                                .ValueGeneratedOnUpdateSometimes()
                                 .HasMaxLength(100)
                                 .HasColumnType("character varying(100)")
                                 .HasColumnName("phone_number");
@@ -227,12 +221,10 @@ namespace VolunterProg.Infrastructure.Migrations
                             b1.IsRequired();
 
                             b1.Property<Guid>("BreedId")
-                                .HasMaxLength(100)
                                 .HasColumnType("uuid")
                                 .HasColumnName("breed_id");
 
                             b1.Property<Guid>("SpeciesId")
-                                .HasMaxLength(100)
                                 .HasColumnType("uuid")
                                 .HasColumnName("species_id");
                         });
@@ -253,7 +245,6 @@ namespace VolunterProg.Infrastructure.Migrations
                         .HasColumnName("id");
 
                     b.Property<int>("Experience")
-                        .HasMaxLength(2000)
                         .HasColumnType("integer")
                         .HasColumnName("experience");
 
@@ -328,25 +319,25 @@ namespace VolunterProg.Infrastructure.Migrations
                         .HasForeignKey("volunteer_id")
                         .HasConstraintName("fk_pets_volunteers_volunteer_id");
 
-                    b.OwnsOne("VolunteerProg.Domain.Volunteers.PetDetails", "Details", b1 =>
+                    b.OwnsOne("VolunteerProg.Domain.Volunteers.RequisiteDetails", "RequisiteDetails", b1 =>
                         {
                             b1.Property<Guid>("PetId")
-                                .HasColumnType("uuid")
-                                .HasColumnName("id");
+                                .HasColumnType("uuid");
 
-                            b1.HasKey("PetId");
+                            b1.HasKey("PetId")
+                                .HasName("pk_pets");
 
                             b1.ToTable("pets");
 
-                            b1.ToJson("Details");
+                            b1.ToJson("RequisiteDetails");
 
                             b1.WithOwner()
                                 .HasForeignKey("PetId")
-                                .HasConstraintName("fk_pets_pets_id");
+                                .HasConstraintName("fk_pets_pets_pet_id");
 
-                            b1.OwnsMany("VolunteerProg.Domain.Volunteers.Requisite", "Requisites", b2 =>
+                            b1.OwnsMany("VolunteerProg.Domain.ValueObjects.Requisite", "Requisites", b2 =>
                                 {
-                                    b2.Property<Guid>("PetDetailsPetId")
+                                    b2.Property<Guid>("RequisiteDetailsPetId")
                                         .HasColumnType("uuid");
 
                                     b2.Property<int>("Id")
@@ -363,19 +354,38 @@ namespace VolunterProg.Infrastructure.Migrations
                                         .HasMaxLength(100)
                                         .HasColumnType("character varying(100)");
 
-                                    b2.HasKey("PetDetailsPetId", "Id")
+                                    b2.HasKey("RequisiteDetailsPetId", "Id")
                                         .HasName("pk_pets");
 
                                     b2.ToTable("pets");
 
                                     b2.WithOwner()
-                                        .HasForeignKey("PetDetailsPetId")
-                                        .HasConstraintName("fk_pets_pets_pet_details_pet_id");
+                                        .HasForeignKey("RequisiteDetailsPetId")
+                                        .HasConstraintName("fk_pets_pets_requisite_details_pet_id");
                                 });
+
+                            b1.Navigation("Requisites");
+                        });
+
+                    b.OwnsOne("VolunteerProg.Domain.Volunteers.PetPhotoDetails", "PetPhotoDetails", b1 =>
+                        {
+                            b1.Property<Guid>("PetId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("id");
+
+                            b1.HasKey("PetId");
+
+                            b1.ToTable("pets");
+
+                            b1.ToJson("PetPhotoDetails");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PetId")
+                                .HasConstraintName("fk_pets_pets_id");
 
                             b1.OwnsMany("VolunteerProg.Domain.Volunteers.PetPhoto", "PetPhotos", b2 =>
                                 {
-                                    b2.Property<Guid>("PetDetailsPetId")
+                                    b2.Property<Guid>("PetPhotoDetailsPetId")
                                         .HasColumnType("uuid");
 
                                     b2.Property<int>("Id")
@@ -390,27 +400,27 @@ namespace VolunterProg.Infrastructure.Migrations
                                         .HasMaxLength(100)
                                         .HasColumnType("character varying(100)");
 
-                                    b2.HasKey("PetDetailsPetId", "Id")
+                                    b2.HasKey("PetPhotoDetailsPetId", "Id")
                                         .HasName("pk_pets");
 
                                     b2.ToTable("pets");
 
                                     b2.WithOwner()
-                                        .HasForeignKey("PetDetailsPetId")
-                                        .HasConstraintName("fk_pets_pets_pet_details_pet_id");
+                                        .HasForeignKey("PetPhotoDetailsPetId")
+                                        .HasConstraintName("fk_pets_pets_pet_photo_details_pet_id");
                                 });
 
                             b1.Navigation("PetPhotos");
-
-                            b1.Navigation("Requisites");
                         });
 
-                    b.Navigation("Details");
+                    b.Navigation("PetPhotoDetails");
+
+                    b.Navigation("RequisiteDetails");
                 });
 
             modelBuilder.Entity("VolunteerProg.Domain.Volunteers.Volunteer", b =>
                 {
-                    b.OwnsOne("VolunteerProg.Domain.Volunteers.VolunteerDetails", "Details", b1 =>
+                    b.OwnsOne("VolunteerProg.Domain.Volunteers.SocialMediasDetails", "SocMedDetails", b1 =>
                         {
                             b1.Property<Guid>("VolunteerId")
                                 .HasColumnType("uuid")
@@ -420,15 +430,15 @@ namespace VolunterProg.Infrastructure.Migrations
 
                             b1.ToTable("volunteers");
 
-                            b1.ToJson("Details");
+                            b1.ToJson("SocMedDetails");
 
                             b1.WithOwner()
                                 .HasForeignKey("VolunteerId")
                                 .HasConstraintName("fk_volunteers_volunteers_id");
 
-                            b1.OwnsMany("VolunteerProg.Domain.Volunteers.SocialMedia", "SocialMedias", b2 =>
+                            b1.OwnsMany("VolunteerProg.Domain.ValueObjects.SocialMedia", "SocialMedias", b2 =>
                                 {
-                                    b2.Property<Guid>("VolunteerDetailsVolunteerId")
+                                    b2.Property<Guid>("SocialMediasDetailsVolunteerId")
                                         .HasColumnType("uuid");
 
                                     b2.Property<int>("Id")
@@ -442,21 +452,41 @@ namespace VolunterProg.Infrastructure.Migrations
 
                                     b2.Property<string>("Url")
                                         .IsRequired()
-                                        .HasColumnType("text");
+                                        .HasMaxLength(100)
+                                        .HasColumnType("character varying(100)");
 
-                                    b2.HasKey("VolunteerDetailsVolunteerId", "Id")
+                                    b2.HasKey("SocialMediasDetailsVolunteerId", "Id")
                                         .HasName("pk_volunteers");
 
                                     b2.ToTable("volunteers");
 
                                     b2.WithOwner()
-                                        .HasForeignKey("VolunteerDetailsVolunteerId")
-                                        .HasConstraintName("fk_volunteers_volunteers_volunteer_details_volunteer_id");
+                                        .HasForeignKey("SocialMediasDetailsVolunteerId")
+                                        .HasConstraintName("fk_volunteers_volunteers_social_medias_details_volunteer_id");
                                 });
 
-                            b1.OwnsMany("VolunteerProg.Domain.Volunteers.Requisite", "Requisites", b2 =>
+                            b1.Navigation("SocialMedias");
+                        });
+
+                    b.OwnsOne("VolunteerProg.Domain.Volunteers.RequisiteDetails", "ReqDetails", b1 =>
+                        {
+                            b1.Property<Guid>("VolunteerId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("id");
+
+                            b1.HasKey("VolunteerId");
+
+                            b1.ToTable("volunteers");
+
+                            b1.ToJson("ReqDetails");
+
+                            b1.WithOwner()
+                                .HasForeignKey("VolunteerId")
+                                .HasConstraintName("fk_volunteers_volunteers_id");
+
+                            b1.OwnsMany("VolunteerProg.Domain.ValueObjects.Requisite", "Requisites", b2 =>
                                 {
-                                    b2.Property<Guid>("VolunteerDetailsVolunteerId")
+                                    b2.Property<Guid>("RequisiteDetailsVolunteerId")
                                         .HasColumnType("uuid");
 
                                     b2.Property<int>("Id")
@@ -473,22 +503,23 @@ namespace VolunterProg.Infrastructure.Migrations
                                         .HasMaxLength(100)
                                         .HasColumnType("character varying(100)");
 
-                                    b2.HasKey("VolunteerDetailsVolunteerId", "Id")
+                                    b2.HasKey("RequisiteDetailsVolunteerId", "Id")
                                         .HasName("pk_volunteers");
 
                                     b2.ToTable("volunteers");
 
                                     b2.WithOwner()
-                                        .HasForeignKey("VolunteerDetailsVolunteerId")
-                                        .HasConstraintName("fk_volunteers_volunteers_volunteer_details_volunteer_id");
+                                        .HasForeignKey("RequisiteDetailsVolunteerId")
+                                        .HasConstraintName("fk_volunteers_volunteers_requisite_details_volunteer_id");
                                 });
 
                             b1.Navigation("Requisites");
-
-                            b1.Navigation("SocialMedias");
                         });
 
-                    b.Navigation("Details")
+                    b.Navigation("ReqDetails")
+                        .IsRequired();
+
+                    b.Navigation("SocMedDetails")
                         .IsRequired();
                 });
 

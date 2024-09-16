@@ -1,7 +1,7 @@
 using CSharpFunctionalExtensions;
 using VolunteerProg.Domain.Shared;
 
-namespace VolunteerProg.Domain.Volunteers;
+namespace VolunteerProg.Domain.ValueObjects;
 
 public record FullName
 {

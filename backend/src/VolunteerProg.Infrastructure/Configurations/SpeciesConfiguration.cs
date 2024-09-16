@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using VolunteerProg.Domain.Ids;
 using VolunteerProg.Domain.Shared;
 using VolunteerProg.Domain.Species;
 
 namespace VolunteerProg.Infrastructure.Configurations;
 
-public class SpeciesConfiguration: IEntityTypeConfiguration<Species>
+public class SpeciesConfiguration : IEntityTypeConfiguration<Species>
 {
     public void Configure(EntityTypeBuilder<Species> builder)
     {

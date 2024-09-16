@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using VolunteerProg.Domain.Ids;
 using VolunteerProg.Domain.Shared;
 using VolunteerProg.Domain.Volunteers;
 
 namespace VolunteerProg.Infrastructure.Configurations;
 
-public class VolunteerConfiguration: IEntityTypeConfiguration<Volunteer>
+public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 {
     public void Configure(EntityTypeBuilder<Volunteer> builder)
     {
@@ -15,12 +16,14 @@ public class VolunteerConfiguration: IEntityTypeConfiguration<Volunteer>
             .HasConversion(
                 id => id.Value,
                 value => VolunteerId.Create(value));
+
         builder.ComplexProperty(v => v.FullName, fnb =>
         {
             fnb.Property(fb => fb.FirstName)
                 .IsRequired()
                 .HasMaxLength(Constants.MAX_SHORT_TEXT_LENGTH)
                 .HasColumnName("first_name");
+
             fnb.Property(lb => lb.LastName)
                 .IsRequired()
                 .HasMaxLength(Constants.MAX_SHORT_TEXT_LENGTH)
@@ -48,14 +51,14 @@ public class VolunteerConfiguration: IEntityTypeConfiguration<Volunteer>
                 .HasMaxLength(Constants.MAX_LARGE_TEXT_LENGTH)
                 .HasColumnName("description");
         });
-        
-        builder.Property(v => v.Experience)
-            .HasMaxLength(Constants.MAX_LARGE_TEXT_LENGTH);
+
+        builder.Property(v => v.Experience);
+
         builder.HasMany(v => v.Pets)
             .WithOne()
             .HasForeignKey("volunteer_id");
 
-        builder.OwnsOne(v => v.Details, vb =>
+        builder.OwnsOne(v => v.SocMedDetails, vb =>
         {
             vb.ToJson();
             vb.OwnsMany(d => d.SocialMedias, ppb =>
@@ -63,17 +66,26 @@ public class VolunteerConfiguration: IEntityTypeConfiguration<Volunteer>
                 ppb.Property(pp => pp.Title)
                     .IsRequired()
                     .HasMaxLength(Constants.MAX_SHORT_TEXT_LENGTH);
+
                 ppb.Property(pp => pp.Url)
-                    .IsRequired();
-            });
-            vb.OwnsMany(d => d.Requisites, rb =>
-            {
-                rb.Property(r => r.Description)
-                    .HasMaxLength(Constants.MAX_LARGE_TEXT_LENGTH);
-                rb.Property(r => r.Title)
+                    .IsRequired()
                     .HasMaxLength(Constants.MAX_SHORT_TEXT_LENGTH);
             });
+        });
 
+        builder.OwnsOne(v => v.ReqDetails, rb =>
+        {
+            rb.ToJson();
+            rb.OwnsMany(d => d.Requisites, rqb =>
+            {
+                rqb.Property(r => r.Description)
+                    .IsRequired()
+                    .HasMaxLength(Constants.MAX_LARGE_TEXT_LENGTH);
+
+                rqb.Property(r => r.Title)
+                    .IsRequired()
+                    .HasMaxLength(Constants.MAX_SHORT_TEXT_LENGTH);
+            });
         });
     }
 }
