@@ -13,7 +13,6 @@ public class Pet : Shared.Entity<PetId>
 
     private Pet(PetId id, NotEmptyVo name, NotEmptyVo description) : base(id)
     {
-        Id = id;
         Name = name;
         Description = description;
     }

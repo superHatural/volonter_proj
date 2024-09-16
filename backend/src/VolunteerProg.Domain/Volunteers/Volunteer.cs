@@ -22,7 +22,6 @@ public sealed class Volunteer : Shared.Entity<VolunteerId>
         RequisiteDetails? reqDetails)
         : base(id)
     {
-        Id = id;
         FullName = fullName;
         Email = emailAddress;
         Description = description;
@@ -34,7 +33,7 @@ public sealed class Volunteer : Shared.Entity<VolunteerId>
 
     private readonly List<Pet> _pets = [];
     
-    public VolunteerId Id { get; private set; }
+
     public FullName FullName { get; private set; } = default!;
     public Email Email { get; private set; } = default!;
     public NotEmptyVo Description { get; private set; } = default!;

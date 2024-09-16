@@ -49,6 +49,7 @@ public class VolunteersRepository : IVolunteersRepository
     public async Task<Result<Volunteer, Error>> GetByEmail(Email emailAddress, CancellationToken cancellationToken)
     {
         var volunteer = await _dbContext.Voluunters
+            .Include(v => v.Pets)
             .FirstOrDefaultAsync(v => v.Email == emailAddress, cancellationToken);
 
         if (volunteer == null)
