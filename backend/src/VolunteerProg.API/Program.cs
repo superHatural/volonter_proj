@@ -1,4 +1,7 @@
+using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
+using VolunteerProg.API.Validation;
 using VolunteerProg.Application;
+using VolunteerProg.Application.Volunteer.CreateVolunteer;
 using VolunteerProg.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,7 +15,10 @@ builder.Services.AddSwaggerGen();
 builder.Services
     .AddInfrastructure()
     .AddApplication();
-
+builder.Services.AddFluentValidationAutoValidation(configuration =>
+{
+    configuration.OverrideDefaultResultFactoryWith<CustomResultFactory>();
+});
 
 var app = builder.Build();
 
