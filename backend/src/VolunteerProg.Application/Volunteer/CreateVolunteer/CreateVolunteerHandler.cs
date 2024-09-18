@@ -22,7 +22,7 @@ public class CreateVolunteerHandler
     {
         var volunteerId = VolunteerId.NewVolunteerId();
 
-        var fullName = FullName.Create(request.FirstName, request.LastName).Value;
+        var fullName = FullName.Create(request.FullName.FirstName, request.FullName.LastName).Value;
 
         var email = Email.Create(request.Email).Value;
 
