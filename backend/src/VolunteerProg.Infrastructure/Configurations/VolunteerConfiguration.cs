@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using VolunteerProg.Domain.Ids;
+using VolunteerProg.Domain.PetManagement.AggregateRoot;
+using VolunteerProg.Domain.PetManagement.ValueObjects.Ids;
 using VolunteerProg.Domain.Shared;
-using VolunteerProg.Domain.Volunteers;
 
 namespace VolunteerProg.Infrastructure.Configurations;
 
@@ -56,11 +56,14 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 
         builder.HasMany(v => v.Pets)
             .WithOne()
-            .HasForeignKey("volunteer_id");
+            .HasForeignKey("volunteer_id")
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(v => v.Pets).AutoInclude();
 
         builder.OwnsOne(v => v.SocMedDetails, vb =>
         {
-            vb.ToJson();
+            vb.ToJson("social_media_details");
             vb.OwnsMany(d => d.SocialMedias, ppb =>
             {
                 ppb.Property(pp => pp.Title)
@@ -75,7 +78,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 
         builder.OwnsOne(v => v.ReqDetails, rb =>
         {
-            rb.ToJson();
+            rb.ToJson("requisite_details");
             rb.OwnsMany(d => d.Requisites, rqb =>
             {
                 rqb.Property(r => r.Description)

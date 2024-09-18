@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using VolunteerProg.Domain.Ids;
+using VolunteerProg.Domain.PetManagement.Entities;
+using VolunteerProg.Domain.PetManagement.ValueObjects;
+using VolunteerProg.Domain.PetManagement.ValueObjects.Ids;
 using VolunteerProg.Domain.Shared;
-using VolunteerProg.Domain.Species;
-using VolunteerProg.Domain.Volunteers;
 
 namespace VolunteerProg.Infrastructure.Configurations;
 
@@ -94,7 +94,8 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         builder.Property(p => p.Status)
             .HasConversion(
                 status => status.ToString(),
-                value => (PetStatus)Enum.Parse(typeof(PetStatus), value));
+                value => (PetStatus)Enum.Parse(typeof(PetStatus), value))
+            .HasColumnName("status");
 
         builder.ComplexProperty(v => v.Address, ab =>
         {
@@ -120,7 +121,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         });
         builder.OwnsOne(p => p.PetPhotoDetails, pb =>
         {
-            pb.ToJson();
+            pb.ToJson("pet_photo_details");
             pb.OwnsMany(d => d.PetPhotos, ppb =>
             {
                 ppb.Property(pp => pp.Path)
@@ -134,7 +135,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
 
         builder.OwnsOne(p => p.RequisiteDetails, pb =>
         {
-            pb.ToJson();
+            pb.ToJson("requisite_details");
             pb.OwnsMany(d => d.Requisites, rb =>
             {
                 rb.Property(r => r.Description)

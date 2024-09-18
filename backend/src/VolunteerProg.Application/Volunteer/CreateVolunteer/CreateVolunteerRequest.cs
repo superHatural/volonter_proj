@@ -3,8 +3,7 @@ using VolunteerProg.Application.Volunteer.Dtos;
 namespace VolunteerProg.Application.Volunteer.CreateVolunteer;
 
 public record CreateVolunteerRequest(
-    string FirstName,
-    string LastName,
+    FullNameDto FullName,
     string Email,
     string Description,
     int Experience,

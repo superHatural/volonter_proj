@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using VolunteerProg.Domain.Ids;
+using VolunteerProg.Domain.PetManagement.AggregateRoot;
+using VolunteerProg.Domain.PetManagement.ValueObjects.Ids;
 using VolunteerProg.Domain.Shared;
-using VolunteerProg.Domain.Species;
 
 namespace VolunteerProg.Infrastructure.Configurations;
 
@@ -25,6 +25,9 @@ public class SpeciesConfiguration : IEntityTypeConfiguration<Species>
         });
         builder.HasMany(s => s.Breeds)
             .WithOne()
-            .HasForeignKey("species_id");
+            .HasForeignKey("species_id")
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(s => s.Breeds).AutoInclude();
     }
 }

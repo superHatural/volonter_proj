@@ -1,10 +1,10 @@
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 using VolunteerProg.Application.Volunteer;
-using VolunteerProg.Domain.Ids;
+using VolunteerProg.Domain.PetManagement.AggregateRoot;
+using VolunteerProg.Domain.PetManagement.ValueObjects;
+using VolunteerProg.Domain.PetManagement.ValueObjects.Ids;
 using VolunteerProg.Domain.Shared;
-using VolunteerProg.Domain.ValueObjects;
-using VolunteerProg.Domain.Volunteers;
 
 namespace VolunteerProg.Infrastructure.Repositories;
 
@@ -38,7 +38,6 @@ public class VolunteersRepository : IVolunteersRepository
     public async Task<Result<Volunteer, Error>> GetByPhoneNumber(Phone phoneNumber, CancellationToken cancellationToken)
     {
         var volunteer = await _dbContext.Voluunters
-            .Include(v => v.Pets)
             .FirstOrDefaultAsync(v => v.PhoneNumber == phoneNumber, cancellationToken);
 
         if (volunteer == null)
@@ -49,7 +48,6 @@ public class VolunteersRepository : IVolunteersRepository
     public async Task<Result<Volunteer, Error>> GetByEmail(Email emailAddress, CancellationToken cancellationToken)
     {
         var volunteer = await _dbContext.Voluunters
-            .Include(v => v.Pets)
             .FirstOrDefaultAsync(v => v.Email == emailAddress, cancellationToken);
 
         if (volunteer == null)

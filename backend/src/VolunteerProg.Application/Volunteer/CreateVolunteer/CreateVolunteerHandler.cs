@@ -1,8 +1,8 @@
 using CSharpFunctionalExtensions;
-using VolunteerProg.Domain.Ids;
+using FluentValidation;
+using VolunteerProg.Domain.PetManagement.ValueObjects;
+using VolunteerProg.Domain.PetManagement.ValueObjects.Ids;
 using VolunteerProg.Domain.Shared;
-using VolunteerProg.Domain.ValueObjects;
-using VolunteerProg.Domain.Volunteers;
 
 namespace VolunteerProg.Application.Volunteer.CreateVolunteer;
 
@@ -10,7 +10,8 @@ public class CreateVolunteerHandler
 {
     private readonly IVolunteersRepository _volunteersRepository;
 
-    public CreateVolunteerHandler(IVolunteersRepository volunteersRepository)
+    public CreateVolunteerHandler(
+        IVolunteersRepository volunteersRepository)
     {
         _volunteersRepository = volunteersRepository;
     }
@@ -21,50 +22,41 @@ public class CreateVolunteerHandler
     {
         var volunteerId = VolunteerId.NewVolunteerId();
 
-        var fullNameResult = FullName.Create(request.FirstName, request.LastName);
-        if (fullNameResult.IsFailure)
-            return fullNameResult.Error;
+        var fullName = FullName.Create(request.FullName.FirstName, request.FullName.LastName).Value;
 
-        var emailResult = Email.Create(request.Email);
-        if (emailResult.IsFailure)
-            return emailResult.Error;
-        
-        var volunteer = await _volunteersRepository.GetByEmail(emailResult.Value, cancellationToken);
+        var email = Email.Create(request.Email).Value;
+
+        var volunteer = await _volunteersRepository.GetByEmail(email, cancellationToken);
         if (volunteer.IsSuccess)
             return Errors.General.AlreadyExist();
-
-        var descriptionResult = NotEmptyVo.Create(request.Description);
-        if (descriptionResult.IsFailure)
-            return descriptionResult.Error;
+        
+        var description = NotEmptyVo.Create(request.Description).Value;
 
         int exp = request.Experience;
 
-        var phoneResult = Phone.Create(request.PhoneNumber);
-        if (phoneResult.IsFailure)
-            return phoneResult.Error;
-        
-        volunteer = await _volunteersRepository.GetByPhoneNumber(phoneResult.Value, cancellationToken);
+        var phone = Phone.Create(request.PhoneNumber).Value;
+
+        volunteer = await _volunteersRepository.GetByPhoneNumber(phone, cancellationToken);
         if (volunteer.IsSuccess)
             return Errors.General.AlreadyExist();
 
-        var requisite = request.RequisitesRecords.Select(req =>
-                Requisite.Create(req.Title, req.Description).Value)
+        var requisite = request.RequisitesRecords
+            .Select(req => Requisite.Create(req.Title, req.Description).Value)
             .ToList();
-
+        
         var socialMedia = request.SocialMediaRecords
-            .Select(socMed =>
-                SocialMedia.Create(socMed.Title, socMed.Link).Value)
+            .Select(socMed => SocialMedia.Create(socMed.Title, socMed.Link).Value)
             .ToList();
-
         
 
-        var volunteerResult = Domain.Volunteers.Volunteer.Create(
+
+        var volunteerResult = Domain.PetManagement.AggregateRoot.Volunteer.Create(
             volunteerId,
-            fullNameResult.Value,
-            emailResult.Value,
-            descriptionResult.Value,
+            fullName,
+            email,
+            description,
             exp,
-            phoneResult.Value,
+            phone,
             new SocialMediasDetails(socialMedia),
             new RequisiteDetails(requisite));
         if (volunteerResult.IsFailure)
