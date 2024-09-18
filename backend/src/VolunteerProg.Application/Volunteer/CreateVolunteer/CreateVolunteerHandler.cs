@@ -1,5 +1,6 @@
 using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.Extensions.Logging;
 using VolunteerProg.Domain.PetManagement.ValueObjects;
 using VolunteerProg.Domain.PetManagement.ValueObjects.Ids;
 using VolunteerProg.Domain.Shared;
@@ -9,11 +10,14 @@ namespace VolunteerProg.Application.Volunteer.CreateVolunteer;
 public class CreateVolunteerHandler
 {
     private readonly IVolunteersRepository _volunteersRepository;
+    private readonly ILogger<CreateVolunteerHandler> _logger;
 
     public CreateVolunteerHandler(
-        IVolunteersRepository volunteersRepository)
+        IVolunteersRepository volunteersRepository,
+        ILogger<CreateVolunteerHandler> logger)
     {
         _volunteersRepository = volunteersRepository;
+        _logger = logger;
     }
 
     public async Task<Result<Guid, Error>> Handle(
@@ -29,7 +33,7 @@ public class CreateVolunteerHandler
         var volunteer = await _volunteersRepository.GetByEmail(email, cancellationToken);
         if (volunteer.IsSuccess)
             return Errors.General.AlreadyExist();
-        
+
         var description = NotEmptyVo.Create(request.Description).Value;
 
         int exp = request.Experience;
@@ -43,11 +47,10 @@ public class CreateVolunteerHandler
         var requisite = request.RequisitesRecords
             .Select(req => Requisite.Create(req.Title, req.Description).Value)
             .ToList();
-        
+
         var socialMedia = request.SocialMediaRecords
             .Select(socMed => SocialMedia.Create(socMed.Title, socMed.Link).Value)
             .ToList();
-        
 
 
         var volunteerResult = Domain.PetManagement.AggregateRoot.Volunteer.Create(
@@ -63,6 +66,7 @@ public class CreateVolunteerHandler
             return volunteerResult.Error;
 
         await _volunteersRepository.Add(volunteerResult.Value, cancellationToken);
+        _logger.LogInformation("Created volunteer with id: {volunteerId}", (Guid)volunteerId);
 
         return volunteerId.Value;
     }
