@@ -1,4 +1,4 @@
-namespace VolunteerProg.Domain.PetManagement.ValueObjects;
+namespace VolunteerProg.Domain.Aggregates.PetManagement.ValueObjects;
 
 public record RequisiteDetails
 {

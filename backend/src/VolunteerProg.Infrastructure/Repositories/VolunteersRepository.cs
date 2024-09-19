@@ -1,10 +1,10 @@
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 using VolunteerProg.Application.Volunteer;
-using VolunteerProg.Domain.PetManagement.AggregateRoot;
-using VolunteerProg.Domain.PetManagement.ValueObjects;
-using VolunteerProg.Domain.PetManagement.ValueObjects.Ids;
+using VolunteerProg.Domain.Aggregates.PetManagement.AggregateRoot;
+using VolunteerProg.Domain.Aggregates.PetManagement.ValueObjects;
 using VolunteerProg.Domain.Shared;
+using VolunteerProg.Domain.Shared.Ids;
 
 namespace VolunteerProg.Infrastructure.Repositories;
 
@@ -23,6 +23,13 @@ public class VolunteersRepository : IVolunteersRepository
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         return volunteer.Id;
+    }
+
+    public async Task<Result<Guid, Error>> Update(Volunteer volunteer, CancellationToken cancellationToken)
+    {
+        await _dbContext.SaveChangesAsync(cancellationToken);
+
+        return (Guid)volunteer.Id;
     }
 
     public async Task<Result<Volunteer, Error>> GetById(VolunteerId volunteerId, CancellationToken cancellationToken)

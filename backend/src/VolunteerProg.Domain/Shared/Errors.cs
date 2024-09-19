@@ -1,5 +1,5 @@
 using CSharpFunctionalExtensions;
-using VolunteerProg.Domain.PetManagement.ValueObjects;
+using VolunteerProg.Domain.Aggregates.PetManagement.ValueObjects;
 
 namespace VolunteerProg.Domain.Shared;
 

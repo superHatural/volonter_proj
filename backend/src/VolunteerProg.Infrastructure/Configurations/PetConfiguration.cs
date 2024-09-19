@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using VolunteerProg.Domain.PetManagement.Entities;
-using VolunteerProg.Domain.PetManagement.ValueObjects;
-using VolunteerProg.Domain.PetManagement.ValueObjects.Ids;
+using VolunteerProg.Domain.Aggregates.PetManagement.Entities;
+using VolunteerProg.Domain.Aggregates.PetManagement.ValueObjects;
 using VolunteerProg.Domain.Shared;
+using VolunteerProg.Domain.Shared.Ids;
 
 namespace VolunteerProg.Infrastructure.Configurations;
 

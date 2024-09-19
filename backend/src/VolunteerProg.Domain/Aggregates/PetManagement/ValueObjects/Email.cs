@@ -2,7 +2,7 @@ using System.Text.RegularExpressions;
 using CSharpFunctionalExtensions;
 using VolunteerProg.Domain.Shared;
 
-namespace VolunteerProg.Domain.PetManagement.ValueObjects;
+namespace VolunteerProg.Domain.Aggregates.PetManagement.ValueObjects;
 
 public record Email
 {

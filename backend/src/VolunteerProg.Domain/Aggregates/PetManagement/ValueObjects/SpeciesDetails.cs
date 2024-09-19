@@ -1,7 +1,7 @@
 using CSharpFunctionalExtensions;
-using VolunteerProg.Domain.PetManagement.ValueObjects.Ids;
+using VolunteerProg.Domain.Shared.Ids;
 
-namespace VolunteerProg.Domain.PetManagement.ValueObjects;
+namespace VolunteerProg.Domain.Aggregates.PetManagement.ValueObjects;
 
 public record SpeciesDetails
 {

@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using VolunteerProg.Infrastructure;
 
+namespace VolunteerProg.API;
+
 public static class AppExtensions
 {
     public static async Task AddMigration(this WebApplication app)

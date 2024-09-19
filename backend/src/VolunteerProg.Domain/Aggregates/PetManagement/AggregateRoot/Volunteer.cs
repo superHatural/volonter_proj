@@ -1,10 +1,10 @@
 using CSharpFunctionalExtensions;
-using VolunteerProg.Domain.PetManagement.Entities;
-using VolunteerProg.Domain.PetManagement.ValueObjects;
-using VolunteerProg.Domain.PetManagement.ValueObjects.Ids;
+using VolunteerProg.Domain.Aggregates.PetManagement.Entities;
+using VolunteerProg.Domain.Aggregates.PetManagement.ValueObjects;
 using VolunteerProg.Domain.Shared;
+using VolunteerProg.Domain.Shared.Ids;
 
-namespace VolunteerProg.Domain.PetManagement.AggregateRoot;
+namespace VolunteerProg.Domain.Aggregates.PetManagement.AggregateRoot;
 
 public sealed class Volunteer : Shared.Entity<VolunteerId>
 {
@@ -32,7 +32,7 @@ public sealed class Volunteer : Shared.Entity<VolunteerId>
     }
 
     private readonly List<Pet> _pets = [];
-    
+
 
     public FullName FullName { get; private set; } = default!;
     public Email Email { get; private set; } = default!;
@@ -41,7 +41,7 @@ public sealed class Volunteer : Shared.Entity<VolunteerId>
     public Phone PhoneNumber { get; private set; } = default!;
     public SocialMediasDetails SocMedDetails { get; private set; }
     public RequisiteDetails ReqDetails { get; private set; }
-    
+
     public IReadOnlyList<Pet> Pets => _pets;
     public int NumberOfFoundAHome => FindNumberOfStatus(PetStatus.FoundAHome);
     public int NumberOfNeedsHelp => FindNumberOfStatus(PetStatus.NeedsHelp);
@@ -65,6 +65,37 @@ public sealed class Volunteer : Shared.Entity<VolunteerId>
         RequisiteDetails? reqDetails
     )
     {
-        return new Volunteer(id, fullName, emailAddress, description, experience, phoneNumber, socMedDetails, reqDetails);
+        return new Volunteer(id, fullName, emailAddress, description, experience, phoneNumber, socMedDetails,
+            reqDetails);
+    }
+
+    public Result<Volunteer, Error> UpdateMainInfo(
+        FullName fullName,
+        Email emailAddress,
+        NotEmptyVo description,
+        int experience,
+        Phone phoneNumber)
+    {
+        FullName = fullName;
+        Email = emailAddress;
+        Description = description;
+        Experience = experience;
+        PhoneNumber = phoneNumber;
+
+        return this;
+    }
+    public Result<Volunteer, Error> UpdateRequisiteInfo(
+        RequisiteDetails? reqDetails)
+    {
+        ReqDetails = reqDetails!;
+        
+        return this;
+    }
+    public Result<Volunteer, Error> UpdateSocialMediaInfo(
+        SocialMediasDetails? socMedDetails)
+    {
+        SocMedDetails = socMedDetails!;
+        
+        return this;
     }
 }

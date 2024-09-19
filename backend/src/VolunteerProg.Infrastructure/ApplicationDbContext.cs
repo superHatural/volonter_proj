@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using VolunteerProg.Domain.PetManagement.AggregateRoot;
+using VolunteerProg.Domain.Aggregates.PetManagement.AggregateRoot;
+using VolunteerProg.Domain.Aggregates.SpeciesManagement.AggregateRoot;
 
 namespace VolunteerProg.Infrastructure;
 

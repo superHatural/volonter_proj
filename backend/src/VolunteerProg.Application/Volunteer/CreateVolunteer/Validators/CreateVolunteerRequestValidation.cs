@@ -1,6 +1,7 @@
 using FluentValidation;
 using VolunteerProg.Application.Validation;
-using VolunteerProg.Domain.PetManagement.ValueObjects;
+using VolunteerProg.Application.Volunteer.CreateVolunteer.Requests;
+using VolunteerProg.Domain.Aggregates.PetManagement.ValueObjects;
 using VolunteerProg.Domain.Shared;
 
 namespace VolunteerProg.Application.Volunteer.CreateVolunteer.Validators;

@@ -1,9 +1,9 @@
 using CSharpFunctionalExtensions;
-using VolunteerProg.Domain.PetManagement.Entities;
-using VolunteerProg.Domain.PetManagement.ValueObjects;
-using VolunteerProg.Domain.PetManagement.ValueObjects.Ids;
+using VolunteerProg.Domain.Aggregates.PetManagement.ValueObjects;
+using VolunteerProg.Domain.Aggregates.SpeciesManagement.Entity;
+using VolunteerProg.Domain.Shared.Ids;
 
-namespace VolunteerProg.Domain.PetManagement.AggregateRoot;
+namespace VolunteerProg.Domain.Aggregates.SpeciesManagement.AggregateRoot;
 
 public class Species : Shared.Entity<SpeciesId>
 {

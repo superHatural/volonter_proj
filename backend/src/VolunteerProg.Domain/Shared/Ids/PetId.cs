@@ -1,4 +1,4 @@
-namespace VolunteerProg.Domain.PetManagement.ValueObjects.Ids;
+namespace VolunteerProg.Domain.Shared.Ids;
 
 public record PetId
 {
