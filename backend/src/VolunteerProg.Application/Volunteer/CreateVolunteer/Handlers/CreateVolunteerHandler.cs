@@ -1,11 +1,11 @@
 using CSharpFunctionalExtensions;
-using FluentValidation;
 using Microsoft.Extensions.Logging;
-using VolunteerProg.Domain.PetManagement.ValueObjects;
-using VolunteerProg.Domain.PetManagement.ValueObjects.Ids;
+using VolunteerProg.Application.Volunteer.CreateVolunteer.Requests;
+using VolunteerProg.Domain.Aggregates.PetManagement.ValueObjects;
 using VolunteerProg.Domain.Shared;
+using VolunteerProg.Domain.Shared.Ids;
 
-namespace VolunteerProg.Application.Volunteer.CreateVolunteer;
+namespace VolunteerProg.Application.Volunteer.CreateVolunteer.Handlers;
 
 public class CreateVolunteerHandler
 {
@@ -53,7 +53,7 @@ public class CreateVolunteerHandler
             .ToList();
 
 
-        var volunteerResult = Domain.PetManagement.AggregateRoot.Volunteer.Create(
+        var volunteerResult = Domain.Aggregates.PetManagement.AggregateRoot.Volunteer.Create(
             volunteerId,
             fullName,
             email,

@@ -1,6 +1,6 @@
 using VolunteerProg.Application.Volunteer.Dtos;
 
-namespace VolunteerProg.Application.Volunteer.CreateVolunteer;
+namespace VolunteerProg.Application.Volunteer.CreateVolunteer.Requests;
 
 public record CreateVolunteerRequest(
     FullNameDto FullName,

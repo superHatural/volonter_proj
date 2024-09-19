@@ -1,8 +1,8 @@
 using CSharpFunctionalExtensions;
-using VolunteerProg.Domain.PetManagement.ValueObjects;
-using VolunteerProg.Domain.PetManagement.ValueObjects.Ids;
+using VolunteerProg.Domain.Aggregates.PetManagement.ValueObjects;
+using VolunteerProg.Domain.Shared.Ids;
 
-namespace VolunteerProg.Domain.PetManagement.Entities;
+namespace VolunteerProg.Domain.Aggregates.SpeciesManagement.Entity;
 
 public class Breed : Shared.Entity<BreedId>
 {
