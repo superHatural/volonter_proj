@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.HttpLogging;
 using Serilog;
 using Serilog.Events;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
+using VolunteerProg.API;
 using VolunteerProg.API.Middlewares;
 using VolunteerProg.API.Validation;
 using VolunteerProg.Application;
@@ -11,19 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-Log.Logger = new LoggerConfiguration()
-    .WriteTo.Console()
-    .WriteTo.Debug()
-    .WriteTo.Seq(builder.Configuration.GetConnectionString("Seq") ??
-                 throw new ArgumentNullException("Seq"))
-    .Enrich.WithThreadId()
-    .Enrich.WithEnvironmentName()
-    .Enrich.WithMachineName()
-    .Enrich.WithEnvironmentUserName()
-    .MinimumLevel.Override("Microsoft.AspNetCore.Hosting", LogEventLevel.Warning)
-    .MinimumLevel.Override("Microsoft.AspNetCore.Mvc", LogEventLevel.Warning)
-    .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
-    .CreateLogger();
+LoggingConfiguration.ConfigureLogging(builder);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
