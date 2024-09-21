@@ -90,5 +90,8 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                     .HasMaxLength(Constants.MAX_SHORT_TEXT_LENGTH);
             });
         });
+        builder.Property<bool>("_deleted")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .HasColumnName("is_deleted");
     }
 }

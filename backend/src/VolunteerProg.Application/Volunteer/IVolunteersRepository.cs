@@ -8,8 +8,7 @@ namespace VolunteerProg.Application.Volunteer;
 public interface IVolunteersRepository
 {
     Task<Guid> Add(Domain.Aggregates.PetManagement.AggregateRoot.Volunteer volunteer, CancellationToken cancellationToken);
-    Task<Result<Guid, Error>> Update(Domain.Aggregates.PetManagement.AggregateRoot.Volunteer volunteer, CancellationToken cancellationToken);
-
+    Task<Result<Guid, Error>> Save(Domain.Aggregates.PetManagement.AggregateRoot.Volunteer volunteer, CancellationToken cancellationToken);
     Task<Result<Domain.Aggregates.PetManagement.AggregateRoot.Volunteer, Error>> GetById(VolunteerId volunteerId,
         CancellationToken cancellationToken);
 

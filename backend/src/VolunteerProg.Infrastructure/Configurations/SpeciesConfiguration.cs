@@ -29,5 +29,8 @@ public class SpeciesConfiguration : IEntityTypeConfiguration<Species>
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.Navigation(s => s.Breeds).AutoInclude();
+        builder.Property<bool>("_deleted")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .HasColumnName("is_deleted");
     }
 }

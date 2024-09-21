@@ -25,13 +25,13 @@ public class VolunteersRepository : IVolunteersRepository
         return volunteer.Id;
     }
 
-    public async Task<Result<Guid, Error>> Update(Volunteer volunteer, CancellationToken cancellationToken)
+    public async Task<Result<Guid, Error>> Save(Volunteer volunteer, CancellationToken cancellationToken)
     {
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         return (Guid)volunteer.Id;
     }
-
+    
     public async Task<Result<Volunteer, Error>> GetById(VolunteerId volunteerId, CancellationToken cancellationToken)
     {
         var volunteer = await _dbContext.Voluunters
