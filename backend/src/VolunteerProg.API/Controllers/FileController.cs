@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using VolunteerProg.API.Extentions;
 using VolunteerProg.Application.Volunteer.PetCreate.AddFile.AddFileHandler;
 using VolunteerProg.Application.Volunteer.PetCreate.AddFile.AddFileRequest;
+using VolunteerProg.Application.Volunteer.PetCreate.DeleteFile.DeleteFileHandler;
 using VolunteerProg.Application.Volunteer.PetCreate.GetFiles.GetFilesHandler;
 using VolunteerProg.Domain.Shared;
 

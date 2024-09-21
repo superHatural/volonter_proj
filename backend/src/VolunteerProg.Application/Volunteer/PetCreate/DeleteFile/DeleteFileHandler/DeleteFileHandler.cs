@@ -2,7 +2,7 @@ using CSharpFunctionalExtensions;
 using VolunteerProg.Application.Providers;
 using VolunteerProg.Domain.Shared;
 
-namespace VolunteerProg.Application.Volunteer.PetCreate.GetFiles.GetFilesHandler;
+namespace VolunteerProg.Application.Volunteer.PetCreate.DeleteFile.DeleteFileHandler;
 
 public class DeleteFileHandler
 {
