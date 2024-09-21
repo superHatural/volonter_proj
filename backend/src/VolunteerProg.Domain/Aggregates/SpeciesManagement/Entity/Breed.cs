@@ -1,6 +1,7 @@
 using CSharpFunctionalExtensions;
 using VolunteerProg.Domain.Aggregates.PetManagement.AggregateRoot;
 using VolunteerProg.Domain.Aggregates.PetManagement.ValueObjects;
+using VolunteerProg.Domain.Shared;
 using VolunteerProg.Domain.Shared.Ids;
 
 namespace VolunteerProg.Domain.Aggregates.SpeciesManagement.Entity;

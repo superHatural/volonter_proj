@@ -1,4 +1,4 @@
-namespace VolunteerProg.Domain.Aggregates.PetManagement.AggregateRoot;
+namespace VolunteerProg.Domain.Shared;
 
 public interface ISoftDelete
 {
