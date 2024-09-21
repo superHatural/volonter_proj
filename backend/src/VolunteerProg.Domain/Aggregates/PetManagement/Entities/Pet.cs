@@ -1,11 +1,14 @@
 ﻿using CSharpFunctionalExtensions;
+using VolunteerProg.Domain.Aggregates.PetManagement.AggregateRoot;
 using VolunteerProg.Domain.Aggregates.PetManagement.ValueObjects;
 using VolunteerProg.Domain.Shared.Ids;
 
 namespace VolunteerProg.Domain.Aggregates.PetManagement.Entities;
 
-public class Pet : Shared.Entity<PetId>
+public class Pet : Shared.Entity<PetId>, ISoftDelete
 {
+    private bool _deleted = false;
+
     public Pet(PetId id) : base(id)
     {
     }
@@ -37,5 +40,17 @@ public class Pet : Shared.Entity<PetId>
     public static Result<Pet> Create(PetId id, NotEmptyVo name, NotEmptyVo emailAddress)
     {
         return Result.Success(new Pet(id, name, emailAddress));
+    }
+
+    public void Delete()
+    {
+        if (!_deleted)
+            _deleted = true;
+    }
+
+    public void Restore()
+    {
+        if (_deleted)
+            _deleted = false;
     }
 }

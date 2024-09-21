@@ -6,7 +6,7 @@ using VolunteerProg.Domain.Shared.Ids;
 
 namespace VolunteerProg.Domain.Aggregates.PetManagement.AggregateRoot;
 
-public sealed class Volunteer : Shared.Entity<VolunteerId>
+public sealed class Volunteer : Shared.Entity<VolunteerId>, ISoftDelete
 {
     private Volunteer(VolunteerId id) : base(id)
     {
@@ -33,7 +33,7 @@ public sealed class Volunteer : Shared.Entity<VolunteerId>
 
     private readonly List<Pet> _pets = [];
 
-
+    private bool _deleted = false;
     public FullName FullName { get; private set; } = default!;
     public Email Email { get; private set; } = default!;
     public NotEmptyVo Description { get; private set; } = default!;
@@ -84,18 +84,41 @@ public sealed class Volunteer : Shared.Entity<VolunteerId>
 
         return this;
     }
+
     public Result<Volunteer, Error> UpdateRequisiteInfo(
         RequisiteDetails? reqDetails)
     {
         ReqDetails = reqDetails!;
-        
+
         return this;
     }
+
     public Result<Volunteer, Error> UpdateSocialMediaInfo(
         SocialMediasDetails? socMedDetails)
     {
         SocMedDetails = socMedDetails!;
-        
+
         return this;
+    }
+
+    public void Delete()
+    {
+        if (!_deleted)
+            _deleted = true;
+        foreach (var pet in Pets)
+        {
+            pet.Delete();
+        }
+        
+    }
+
+    public void Restore()
+    {
+        if (!_deleted)
+            _deleted = false;
+        foreach (var pet in Pets)
+        {
+            pet.Restore();
+        }
     }
 }

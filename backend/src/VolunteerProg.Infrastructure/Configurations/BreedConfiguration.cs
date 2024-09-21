@@ -23,5 +23,8 @@ public class BreedConfiguration : IEntityTypeConfiguration<Breed>
                 .HasMaxLength(Constants.MAX_SHORT_TEXT_LENGTH)
                 .HasColumnName("title");
         });
+        builder.Property<bool>("_deleted")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .HasColumnName("is_deleted");
     }
 }

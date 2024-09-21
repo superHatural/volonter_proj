@@ -1,10 +1,10 @@
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using VolunteerProg.Application.Volunteer.CreateVolunteer;
-using VolunteerProg.Application.Volunteer.CreateVolunteer.Handlers;
-using VolunteerProg.Application.Volunteer.UpdateVolunteer.UpdateMainInfo.Handler;
-using VolunteerProg.Application.Volunteer.UpdateVolunteer.UpdateRequisites.Handlers;
-using VolunteerProg.Application.Volunteer.UpdateVolunteer.UpdateSocialMedia.Handlers;
+using VolunteerProg.Application.Volunteer.Create.Handlers;
+using VolunteerProg.Application.Volunteer.Delete.Handlers;
+using VolunteerProg.Application.Volunteer.Update.UpdateMainInfo.Handler;
+using VolunteerProg.Application.Volunteer.Update.UpdateRequisites.Handlers;
+using VolunteerProg.Application.Volunteer.Update.UpdateSocialMedia.Handlers;
 
 namespace VolunteerProg.Application;
 
@@ -16,6 +16,7 @@ public static class Inject
         services.AddScoped<UpdateVolunteerRequisitesHandler>();
         services.AddScoped<UpdateVolunteerMainInfoHandler>();
         services.AddScoped<UpdateVolunteerSocialMediaHandler>();
+        services.AddScoped<DeleteVolunteerHandler>();
         services.AddValidatorsFromAssembly(typeof(Inject).Assembly);
         return services;
     }
