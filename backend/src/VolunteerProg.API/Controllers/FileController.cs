@@ -8,9 +8,9 @@ using VolunteerProg.Domain.Shared;
 
 namespace VolunteerProg.API.Controllers;
 
-public class FileController: ApplicationController
+public class FileController : ApplicationController
 {
-    [HttpPost("/Files")]
+    [HttpPost("/files")]
     public async Task<IActionResult> CreateFile(IFormFile? file,
         [FromServices] AddFileHandler handler,
         CancellationToken cancellationToken)
@@ -20,6 +20,7 @@ public class FileController: ApplicationController
             var error = Errors.General.ValueIsRequired("File");
             return error.ToResponse();
         }
+
         await using var stream = file.OpenReadStream();
         var request = new AddFileRequest(stream, "photos", Guid.NewGuid().ToString());
         var result = await handler.Handle(request, cancellationToken);
@@ -27,17 +28,19 @@ public class FileController: ApplicationController
             return result.Error.ToResponse();
         return Ok(result.Value);
     }
-    
-    [HttpPost("/FilesLink")]
+
+    [HttpPost("/files-link")]
     public async Task<IActionResult> GetFiles(List<string> filesNames,
-        [FromServices] GetFilesHandler handler)
+        [FromServices] GetFilesHandler handler,
+        CancellationToken cancellationToken)
     {
-        var result = await handler.Handle(filesNames);
+        var result = await handler.Handle(filesNames, cancellationToken);
         if (result.IsFailure)
             return result.Error.ToResponse();
         return Ok(result.Value);
     }
-    [HttpDelete("/Files")]
+
+    [HttpDelete("/files")]
     public async Task<IActionResult> DeleteFile(string fileName,
         [FromServices] DeleteFileHandler handler,
         CancellationToken cancellationToken)

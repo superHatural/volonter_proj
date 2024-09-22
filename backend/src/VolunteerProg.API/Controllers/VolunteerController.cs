@@ -88,6 +88,4 @@ public class VolunteerController : ApplicationController
             return result.Error.ToResponse();
         return Ok(result.Value);
     }
-    
- 
 }

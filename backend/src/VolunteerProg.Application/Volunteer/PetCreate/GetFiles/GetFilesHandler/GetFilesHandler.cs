@@ -13,9 +13,10 @@ public class GetFilesHandler
         _fileProvider = fileProvider;
     }
 
-    public async Task<Result<List<string>, Error>> Handle(List<string> request)
+    public async Task<Result<List<string>, Error>> Handle(List<string> request,
+        CancellationToken cancellationToken)
     {
-        var result = await _fileProvider.GetFiles(request);
+        var result = await _fileProvider.GetFiles(request, cancellationToken);
         if (result.IsFailure)
             return result.Error;
         return result;

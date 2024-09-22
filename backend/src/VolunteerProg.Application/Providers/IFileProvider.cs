@@ -11,7 +11,8 @@ public interface IFileProvider
         CancellationToken cancellationToken);
 
     public Task<Result<List<string>, Error>> GetFiles(
-        List<string> fileNames);
+        List<string> fileNames,
+        CancellationToken cancellationToken);
 
     public Task<Result<string, Error>> DeleteFile(
         string fileName,

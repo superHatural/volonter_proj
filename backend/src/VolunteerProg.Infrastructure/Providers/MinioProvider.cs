@@ -13,6 +13,7 @@ public class MinioProvider : IFileProvider
 {
     private readonly IMinioClient _minioClient;
     private readonly ILogger<MinioProvider> _logger;
+    private const string BUCKET_PHOTOS = "photos";
 
     public MinioProvider(IMinioClient minioClient, ILogger<MinioProvider> logger)
     {
@@ -27,18 +28,18 @@ public class MinioProvider : IFileProvider
         try
         {
             var bucketExistArgs = new BucketExistsArgs()
-                .WithBucket("photos");
+                .WithBucket(BUCKET_PHOTOS);
 
             var bucketExists = await _minioClient.BucketExistsAsync(bucketExistArgs, cancellationToken);
             if (!bucketExists)
             {
                 var makeBucketArgs = new MakeBucketArgs()
-                    .WithBucket("photos");
+                    .WithBucket(BUCKET_PHOTOS);
                 await _minioClient.MakeBucketAsync(makeBucketArgs, cancellationToken);
             }
 
             var putObjectArgs = new PutObjectArgs()
-                .WithBucket("photos")
+                .WithBucket(BUCKET_PHOTOS)
                 .WithStreamData(fileData.Stream)
                 .WithObjectSize(fileData.Stream.Length)
                 .WithObject(fileData.ObjectName);
@@ -54,7 +55,8 @@ public class MinioProvider : IFileProvider
     }
 
     public async Task<Result<List<string>, Error>> GetFiles(
-        List<string> fileNames)
+        List<string> fileNames,
+        CancellationToken cancellationToken)
     {
         try
         {
@@ -62,12 +64,13 @@ public class MinioProvider : IFileProvider
             foreach (var photo in fileNames)
             {
                 var args = new PresignedGetObjectArgs()
-                    .WithBucket("photos")
+                    .WithBucket(BUCKET_PHOTOS)
                     .WithObject(photo)
                     .WithExpiry(1000);
                 var presignedUrl = await _minioClient.PresignedGetObjectAsync(args);
                 objectLinks.Add(presignedUrl);
             }
+
             _logger.LogInformation("Files successfully retrieved");
             return objectLinks;
         }
@@ -85,7 +88,7 @@ public class MinioProvider : IFileProvider
         try
         {
             var args = new RemoveObjectArgs()
-                .WithBucket("photos")
+                .WithBucket(BUCKET_PHOTOS)
                 .WithObject(fileName);
             await _minioClient.RemoveObjectAsync(args, cancellationToken);
             _logger.LogInformation("Removed object {fileName} from bucket photos successfully", fileName);
