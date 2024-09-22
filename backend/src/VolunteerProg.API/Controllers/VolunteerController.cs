@@ -5,12 +5,16 @@ using VolunteerProg.Application.Volunteer.Create.Requests;
 using VolunteerProg.Application.Volunteer.Delete.Handlers;
 using VolunteerProg.Application.Volunteer.Delete.Requests;
 using VolunteerProg.Application.Volunteer.Dtos;
+using VolunteerProg.Application.Volunteer.PetCreate.AddFile.AddFileHandler;
+using VolunteerProg.Application.Volunteer.PetCreate.AddFile.AddFileRequest;
+using VolunteerProg.Application.Volunteer.PetCreate.GetFiles.GetFilesHandler;
 using VolunteerProg.Application.Volunteer.Update.UpdateMainInfo.Handler;
 using VolunteerProg.Application.Volunteer.Update.UpdateMainInfo.Request;
 using VolunteerProg.Application.Volunteer.Update.UpdateRequisites.Handlers;
 using VolunteerProg.Application.Volunteer.Update.UpdateRequisites.Requests;
 using VolunteerProg.Application.Volunteer.Update.UpdateSocialMedia.Handlers;
 using VolunteerProg.Application.Volunteer.Update.UpdateSocialMedia.Requests;
+using VolunteerProg.Domain.Shared;
 
 namespace VolunteerProg.API.Controllers;
 
