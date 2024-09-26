@@ -9,6 +9,6 @@ public class DeleteVolunteerValidation : AbstractValidator<DeleteVolunteerReques
 {
     public DeleteVolunteerValidation()
     {
-        RuleFor(c => c.VolunteerId).NotEmpty().WithError(Errors.General.ValueIsRequired());;
+        RuleFor(c => c.VolunteerId).NotEmpty().WithError(Errors.General.ValueIsRequired());
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using VolunteerProg.Application.Volunteer.Create.Handlers;
 using VolunteerProg.Application.Volunteer.Delete.Handlers;
 using VolunteerProg.Application.Volunteer.PetCreate.AddFile.AddFileHandler;
+using VolunteerProg.Application.Volunteer.PetCreate.Create.Handler;
 using VolunteerProg.Application.Volunteer.PetCreate.DeleteFile.DeleteFileHandler;
 using VolunteerProg.Application.Volunteer.PetCreate.GetFiles.GetFilesHandler;
 using VolunteerProg.Application.Volunteer.Update.UpdateMainInfo.Handler;
@@ -23,6 +24,7 @@ public static class Inject
         services.AddScoped<AddFileHandler>();
         services.AddScoped<GetFilesHandler>();
         services.AddScoped<DeleteFileHandler>();
+        services.AddScoped<CreatePetHandler>();
         
         services.AddValidatorsFromAssembly(typeof(Inject).Assembly);
         return services;

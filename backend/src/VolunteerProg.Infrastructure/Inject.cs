@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Minio;
+using VolunteerProg.Application.Database;
 using VolunteerProg.Application.Providers;
 using VolunteerProg.Application.Volunteer;
 using VolunteerProg.Infrastructure.Options;
@@ -36,6 +37,7 @@ public static class Inject
         });
 
         services.AddScoped<IFileProvider, MinioProvider>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         return services;
     }
     

@@ -1,4 +1,6 @@
-﻿using CSharpFunctionalExtensions;
+﻿using System.Globalization;
+using System.Runtime.InteropServices.JavaScript;
+using CSharpFunctionalExtensions;
 using VolunteerProg.Domain.Aggregates.PetManagement.AggregateRoot;
 using VolunteerProg.Domain.Aggregates.PetManagement.ValueObjects;
 using VolunteerProg.Domain.Shared;
@@ -6,21 +8,51 @@ using VolunteerProg.Domain.Shared.Ids;
 
 namespace VolunteerProg.Domain.Aggregates.PetManagement.Entities;
 
-public class Pet : Shared.Entity<PetId>, ISoftDelete
+public sealed class Pet : Shared.Entity<PetId>, ISoftDelete
 {
     private bool _deleted = false;
 
-    public Pet(PetId id) : base(id)
+    private Pet(PetId id) : base(id)
     {
     }
 
-    private Pet(PetId id, NotEmptyVo name, NotEmptyVo description) : base(id)
+    public Pet(
+        PetId id,
+        NotEmptyVo name,
+        NotEmptyVo description,
+        SpeciesDetails speciesDetails,
+        NotEmptyVo color,
+        NotEmptyVo healthInfo,
+        Address address,
+        int weight,
+        int height,
+        Phone phoneNumber,
+        bool isCastrated,
+        Date birthDate,
+        bool isVaccinated,
+        PetStatus status,
+        PetPhotoDetails? petPhotoDetails,
+        RequisiteDetails? requisiteDetails) : base(id)
     {
         Name = name;
         Description = description;
+        SpeciesDetails = speciesDetails;
+        Color = color;
+        HealthInfo = healthInfo;
+        Address = address;
+        Weight = weight;
+        Height = height;
+        PhoneNumber = phoneNumber;
+        IsCastrated = isCastrated;
+        BirthDate = birthDate;
+        IsVaccinated = isVaccinated;
+        Status = status;
+        PetPhotoDetails = petPhotoDetails;
+        RequisiteDetails = requisiteDetails;
+        DateOfCreate = Date.Create(DateTime.Now.ToString(CultureInfo.CurrentCulture)).Value;
+        
     }
-
-    public PetId Id { get; private set; }
+    
     public NotEmptyVo Name { get; private set; } = default!;
     public NotEmptyVo Description { get; private set; } = default!;
     public SpeciesDetails SpeciesDetails { get; private set; } = default!;
@@ -38,9 +70,9 @@ public class Pet : Shared.Entity<PetId>, ISoftDelete
     public RequisiteDetails? RequisiteDetails { get; private set; }
     public Date DateOfCreate { get; private set; } = default!;
 
-    public static Result<Pet> Create(PetId id, NotEmptyVo name, NotEmptyVo emailAddress)
+    public void AddPhoto(PetPhotoDetails photoDetails)
     {
-        return Result.Success(new Pet(id, name, emailAddress));
+        PetPhotoDetails = photoDetails;
     }
 
     public void Delete()

@@ -13,11 +13,11 @@ public class DeleteFileHandler
         _fileProvider = fileProvider;
     }
 
-    public async Task<Result<string, Error>> Handle(string request, CancellationToken cancellationToken)
+    public async Task<UnitResult<Error>> Handle(IEnumerable<string> request, CancellationToken cancellationToken)
     {
         var result = await _fileProvider.DeleteFile(request, cancellationToken);
         if (result.IsFailure)
             return result.Error;
-        return result;
+        return Result.Success<Error>();
     }
 }

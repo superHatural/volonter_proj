@@ -53,7 +53,7 @@ public class CreateVolunteerHandler
             .ToList();
 
 
-        var volunteerResult = Domain.Aggregates.PetManagement.AggregateRoot.Volunteer.Create(
+        var volunteerResult = new Domain.Aggregates.PetManagement.AggregateRoot.Volunteer(
             volunteerId,
             fullName,
             email,
@@ -62,10 +62,8 @@ public class CreateVolunteerHandler
             phone,
             new SocialMediasDetails(socialMedia),
             new RequisiteDetails(requisite));
-        if (volunteerResult.IsFailure)
-            return volunteerResult.Error;
 
-        await _volunteersRepository.Add(volunteerResult.Value, cancellationToken);
+        await _volunteersRepository.Add(volunteerResult, cancellationToken);
         _logger.LogInformation("Created volunteer with id: {volunteerId}", (Guid)volunteerId);
 
         return volunteerId.Value;

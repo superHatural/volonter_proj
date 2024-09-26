@@ -25,9 +25,8 @@ public class VolunteersRepository : IVolunteersRepository
         return volunteer.Id;
     }
 
-    public async Task<Result<Guid, Error>> Save(Volunteer volunteer, CancellationToken cancellationToken)
+    public Guid Save(Volunteer volunteer, CancellationToken cancellationToken)
     {
-        await _dbContext.SaveChangesAsync(cancellationToken);
 
         return (Guid)volunteer.Id;
     }

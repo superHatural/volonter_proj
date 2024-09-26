@@ -6,7 +6,7 @@ namespace VolunteerProg.Domain.Aggregates.PetManagement.ValueObjects;
 public record NotEmptyVo
 {
     public string Value { get; } = default!;
-
+    
     private NotEmptyVo(string value)
     {
         Value = value;
@@ -18,4 +18,5 @@ public record NotEmptyVo
             return Errors.General.ValueIsRequired("lastName");
         return new NotEmptyVo(value);
     }
+    
 }
