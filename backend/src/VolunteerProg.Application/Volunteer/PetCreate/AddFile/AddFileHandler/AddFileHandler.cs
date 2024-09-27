@@ -42,26 +42,34 @@ public class AddFileHandler
 
             List<FilePathData> filesPath = [];
             List<FileData> files = [];
+            
             foreach (var file in request.Files)
             {
                 var extension = Path.GetExtension(file.ObjectName);
+                
                 var filePath =
                     FilePath.Create(NotEmptyVo.Create(Guid.NewGuid().ToString()).Value, extension);
                 if (filePath.IsFailure)
                     return filePath.Error;
+                
                 var filePathData = new FilePathData(filePath.Value, false);
                 filesPath.Add(filePathData);
+                
                 var fileToUpload = new FileData(file.Stream, CheckCategory.WhatAType(extension, null), filePath.Value);
                 files.Add(fileToUpload);
             }
             var petResult = volunteer.Value.AddFilePet(PetId.Create(request.PetId), new PetPhotoDetails(filesPath));
             if (petResult.IsFailure)
                 return volunteer.Error;
+            
             await _unitOfWork.SaveChanges(cancellationToken);
+            
             var fileResult = await _provider.UploadFiles(files, cancellationToken);
             if (fileResult.IsFailure)
                 return fileResult.Error;
+            
             transaction.Commit();
+            
             return fileResult;
         }
         catch (Exception ex)

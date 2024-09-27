@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using VolunteerProg.API.Contracts;
 using VolunteerProg.API.Extentions;
@@ -97,37 +98,24 @@ public class VolunteerController : ApplicationController
     public async Task<ActionResult> AddPet(
         [FromRoute] Guid id,
         [FromBody] CreatePetRequest request,
+        [FromServices] IValidator<CreatePetCommand> validator,
         [FromServices] CreatePetHandler handler,
         CancellationToken cancellationToken)
     {
-        var validator = new CreatePetCommandValidation();
-        var command = new CreatePetCommand(
-            id,
-            request.Name,
-            request.Description,
-            request.Species,
-            request.Breed,
-            request.Color,
-            request.HealthInfo,
-            request.Address,
-            request.Weight,
-            request.Height,
-            request.Phone,
-            request.IsCastrated,
-            request.BirthDate,
-            request.IsVaccinated,
-            request.Status,
-            request.RequisitesRecords);
+        var command = request.ToCommand(id);
+        
         var resultValidation = await validator.ValidateAsync(command, cancellationToken);
         if (!resultValidation.IsValid)
             return BadRequest(resultValidation.Errors);
+        
         var result = await handler.Handle(command, cancellationToken);
+        
         if (result.IsFailure)
             return result.Error.ToResponse();
         return Ok(result.Value);
     }
 
-    [HttpPost("\"{volunteerId:guid}/pet-files/{petId:guid}\"")]
+    [HttpPost("{volunteerId:guid}/pet-files/{petId:guid}")]
     public async Task<ActionResult> AddFilePet(
         [FromRoute] Guid volunteerId,
         [FromRoute] Guid petId,

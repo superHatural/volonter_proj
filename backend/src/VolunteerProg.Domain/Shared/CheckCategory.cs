@@ -4,7 +4,7 @@ public static class CheckCategory
 {
     public static string WhatAType(string? extension, string? path)
     {
-        return (extension ?? path) switch
+        return (extension ?? Path.GetExtension(path)) switch
         {
             ".jpg" => Constants.BUCKET_PHOTOS,
             ".png" => Constants.BUCKET_PHOTOS,

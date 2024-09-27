@@ -21,6 +21,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Volunteer\Create\Commands\" />
+      <Folder Include="Volunteer\PetCreate\Create\Commands\" />
       <Folder Include="Volunteer\Update\UpdateSocialMedia\" />
     </ItemGroup>
 

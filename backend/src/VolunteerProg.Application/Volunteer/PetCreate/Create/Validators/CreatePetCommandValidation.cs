@@ -1,10 +1,11 @@
 using FluentValidation;
 using VolunteerProg.Application.Validation;
 using VolunteerProg.Application.Volunteer.Dtos;
+using VolunteerProg.Application.Volunteer.PetCreate.Create.Requests;
 using VolunteerProg.Domain.Aggregates.PetManagement.ValueObjects;
 using VolunteerProg.Domain.Shared;
 
-namespace VolunteerProg.Application.Volunteer.PetCreate.Create.Requests;
+namespace VolunteerProg.Application.Volunteer.PetCreate.Create.Validators;
 
 public class CreatePetCommandValidation : AbstractValidator<CreatePetCommand>
 {

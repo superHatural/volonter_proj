@@ -1,5 +1,6 @@
 using VolunteerProg.Application.Volunteer.Create.Requests;
 using VolunteerProg.Application.Volunteer.Dtos;
+using VolunteerProg.Application.Volunteer.PetCreate.Create.Requests;
 
 namespace VolunteerProg.API.Contracts;
 
@@ -19,4 +20,23 @@ public record CreatePetRequest(
     bool IsVaccinated,
     string Status,
     IEnumerable<RequisiteDto> RequisitesRecords
-);
+)
+{
+    public CreatePetCommand ToCommand(Guid volunteerId) =>
+        new(volunteerId,
+            Name,
+            Description,
+            Species,
+            Breed,
+            Color,
+            HealthInfo,
+            Address,
+            Weight,
+            Height,
+            Phone,
+            IsCastrated,
+            BirthDate,
+            IsVaccinated,
+            Status,
+            RequisitesRecords);
+}

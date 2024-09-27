@@ -66,7 +66,9 @@ public class UpdateVolunteerMainInfoHandler
                 return volunteerResult.Error;
 
             await _unitOfWork.SaveChanges(cancellationToken);
+            
             transaction.Commit();
+            
             _logger.LogInformation("Updated volunteer with id: {volunteerId}", (Guid)volunteerId);
             
             return volunteerId.Value;
