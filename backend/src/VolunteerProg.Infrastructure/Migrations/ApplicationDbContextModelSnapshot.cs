@@ -508,8 +508,8 @@ namespace VolunteerProg.Infrastructure.Migrations
 
                                     b2.Property<string>("Path")
                                         .IsRequired()
-                                        .HasMaxLength(100)
-                                        .HasColumnType("character varying(100)");
+                                        .HasColumnType("text")
+                                        .HasColumnName("path");
 
                                     b2.HasKey("PetPhotoDetailsPetId", "Id")
                                         .HasName("pk_pets");

@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.JavaScript;
 using CSharpFunctionalExtensions;
 using VolunteerProg.Domain.Aggregates.PetManagement.Entities;
 using VolunteerProg.Domain.Aggregates.PetManagement.ValueObjects;
@@ -55,20 +56,6 @@ public sealed class Volunteer : Shared.Entity<VolunteerId>, ISoftDelete
         return value.Count();
     }
 
-    public static Result<Volunteer, Error> Create(VolunteerId id,
-        FullName fullName,
-        Email emailAddress,
-        NotEmptyVo description,
-        int experience,
-        Phone phoneNumber,
-        SocialMediasDetails? socMedDetails,
-        RequisiteDetails? reqDetails
-    )
-    {
-        return new Volunteer(id, fullName, emailAddress, description, experience, phoneNumber, socMedDetails,
-            reqDetails);
-    }
-
     public Result<Volunteer, Error> UpdateMainInfo(
         FullName fullName,
         Email emailAddress,
@@ -99,6 +86,21 @@ public sealed class Volunteer : Shared.Entity<VolunteerId>, ISoftDelete
         SocMedDetails = socMedDetails!;
 
         return this;
+    }
+
+    public UnitResult<Error> AddPet(Pet pet)
+    {
+        _pets.Add(pet);
+        return Result.Success<Error>();
+    }
+
+    public UnitResult<Error> AddFilePet(PetId petId, PetPhotoDetails photoDetails)
+    {
+        var pet = _pets.FirstOrDefault(p => p.Id == petId);
+        if (pet == null)
+            return Errors.General.NotFound(petId);
+        pet.AddPhoto(photoDetails);
+        return Result.Success<Error>();
     }
 
     public void Delete()

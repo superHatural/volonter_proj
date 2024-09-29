@@ -124,10 +124,11 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             pb.ToJson("pet_photo_details");
             pb.OwnsMany(d => d.PetPhotos, ppb =>
             {
-                ppb.Property(pp => pp.Path)
-                    .IsRequired()
-                    .HasMaxLength(Constants.MAX_SHORT_TEXT_LENGTH);
-
+                ppb.Property(path => path.Path)
+                    .HasConversion(
+                        p => p.Path.Value,
+                        value => FilePath.Create(NotEmptyVo.Create(value).Value).Value)
+                    .HasColumnName("path");
                 ppb.Property(pp => pp.IsMainImage)
                     .IsRequired();
             });
@@ -139,9 +140,11 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             pb.OwnsMany(d => d.Requisites, rb =>
             {
                 rb.Property(r => r.Description)
+                    .IsRequired()
                     .HasMaxLength(Constants.MAX_LARGE_TEXT_LENGTH);
 
                 rb.Property(r => r.Title)
+                    .IsRequired()
                     .HasMaxLength(Constants.MAX_SHORT_TEXT_LENGTH);
             });
         });

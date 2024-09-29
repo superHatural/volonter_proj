@@ -13,7 +13,7 @@ using VolunteerProg.Infrastructure;
 namespace VolunteerProg.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240921123407_init")]
+    [Migration("20240922194648_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -511,8 +511,8 @@ namespace VolunteerProg.Infrastructure.Migrations
 
                                     b2.Property<string>("Path")
                                         .IsRequired()
-                                        .HasMaxLength(100)
-                                        .HasColumnType("character varying(100)");
+                                        .HasColumnType("text")
+                                        .HasColumnName("path");
 
                                     b2.HasKey("PetPhotoDetailsPetId", "Id")
                                         .HasName("pk_pets");

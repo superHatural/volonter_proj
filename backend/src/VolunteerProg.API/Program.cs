@@ -39,6 +39,7 @@ if (app.Environment.IsDevelopment())
     await app.AddMigration();
 }
 
+
 app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
 app.UseAuthorization();

@@ -13,7 +13,7 @@ public class GetFilesHandler
         _fileProvider = fileProvider;
     }
 
-    public async Task<Result<List<string>, Error>> Handle(List<string> request,
+    public async Task<Result<IReadOnlyList<string>, Error>> Handle(IEnumerable<string> request,
         CancellationToken cancellationToken)
     {
         var result = await _fileProvider.GetFiles(request, cancellationToken);

@@ -2,13 +2,13 @@ namespace VolunteerProg.Domain.Aggregates.PetManagement.ValueObjects;
 
 public record PetPhotoDetails
 {
-    public IReadOnlyList<PetPhoto> PetPhotos;
+    public IReadOnlyList<FilePathData> PetPhotos;
 
     private PetPhotoDetails()
     {
     }
 
-    public PetPhotoDetails(IEnumerable<PetPhoto> petPhotos)
+    public PetPhotoDetails(IEnumerable<FilePathData> petPhotos)
     {
         PetPhotos = petPhotos.ToList();
     }
