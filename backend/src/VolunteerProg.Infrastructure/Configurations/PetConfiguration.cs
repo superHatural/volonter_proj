@@ -84,6 +84,12 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .IsRequired()
                 .HasColumnName("birth_date");
         });
+        builder.ComplexProperty(p => p.SerialNumber, bb =>
+        {
+            bb.Property(d => d.Value)
+                .IsRequired()
+                .HasColumnName("serial_number");
+        });
         builder.ComplexProperty(p => p.DateOfCreate, dcb =>
         {
             dcb.Property(d => d.DateTime)
@@ -122,7 +128,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         builder.OwnsOne(p => p.PetPhotoDetails, pb =>
         {
             pb.ToJson("pet_photo_details");
-            pb.OwnsMany(d => d.PetPhotos, ppb =>
+            pb.OwnsMany(d => d.Values, ppb =>
             {
                 ppb.Property(path => path.Path)
                     .HasConversion(
@@ -137,7 +143,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         builder.OwnsOne(p => p.RequisiteDetails, pb =>
         {
             pb.ToJson("requisite_details");
-            pb.OwnsMany(d => d.Requisites, rb =>
+            pb.OwnsMany(d => d.Values, rb =>
             {
                 rb.Property(r => r.Description)
                     .IsRequired()

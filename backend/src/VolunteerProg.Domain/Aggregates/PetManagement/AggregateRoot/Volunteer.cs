@@ -19,8 +19,8 @@ public sealed class Volunteer : Shared.Entity<VolunteerId>, ISoftDelete
         NotEmptyVo description,
         int experience,
         Phone phoneNumber,
-        SocialMediasDetails? socMedDetails,
-        RequisiteDetails? reqDetails)
+        ValueObjectList<SocialMedia>? socMedDetails,
+        ValueObjectList<Requisite>? reqDetails)
         : base(id)
     {
         FullName = fullName;
@@ -40,8 +40,8 @@ public sealed class Volunteer : Shared.Entity<VolunteerId>, ISoftDelete
     public NotEmptyVo Description { get; private set; } = default!;
     public int Experience { get; private set; } = default!;
     public Phone PhoneNumber { get; private set; } = default!;
-    public SocialMediasDetails SocMedDetails { get; private set; }
-    public RequisiteDetails ReqDetails { get; private set; }
+    public ValueObjectList<SocialMedia> SocMedDetails { get; private set; }
+    public ValueObjectList<Requisite> ReqDetails { get; private set; }
 
     public IReadOnlyList<Pet> Pets => _pets;
     public int NumberOfFoundAHome => FindNumberOfStatus(PetStatus.FoundAHome);
@@ -73,7 +73,7 @@ public sealed class Volunteer : Shared.Entity<VolunteerId>, ISoftDelete
     }
 
     public Result<Volunteer, Error> UpdateRequisiteInfo(
-        RequisiteDetails? reqDetails)
+        ValueObjectList<Requisite>? reqDetails)
     {
         ReqDetails = reqDetails!;
 
@@ -81,7 +81,7 @@ public sealed class Volunteer : Shared.Entity<VolunteerId>, ISoftDelete
     }
 
     public Result<Volunteer, Error> UpdateSocialMediaInfo(
-        SocialMediasDetails? socMedDetails)
+        ValueObjectList<SocialMedia>? socMedDetails)
     {
         SocMedDetails = socMedDetails!;
 
@@ -90,11 +90,22 @@ public sealed class Volunteer : Shared.Entity<VolunteerId>, ISoftDelete
 
     public UnitResult<Error> AddPet(Pet pet)
     {
+        if (_pets.Count == 0)
+        {
+            var serialNumber = SerialNumber.Create(1).Value;
+            pet.SetSerialNumber(serialNumber);
+        }
+        else
+        {
+            var serialNumber = SerialNumber.Create(_pets.Count + 1).Value;
+            pet.SetSerialNumber(serialNumber);
+        }
+
         _pets.Add(pet);
         return Result.Success<Error>();
     }
 
-    public UnitResult<Error> AddFilePet(PetId petId, PetPhotoDetails photoDetails)
+    public UnitResult<Error> AddFilePet(PetId petId, ValueObjectList<FilePathData> photoDetails)
     {
         var pet = _pets.FirstOrDefault(p => p.Id == petId);
         if (pet == null)
@@ -111,7 +122,42 @@ public sealed class Volunteer : Shared.Entity<VolunteerId>, ISoftDelete
         {
             pet.Delete();
         }
-        
+    }
+
+    public UnitResult<Error> ChangePetPosition(PetId petId, SerialNumber newPosition)
+    {
+        if (newPosition.Value > _pets.Count || newPosition.Value <= 0)
+            return Errors.General.ValueIsInvalid("newPosition");
+
+        var pet = _pets.FirstOrDefault(p => p.Id == petId);
+        if (pet == null)
+            return Errors.General.NotFound(petId);
+
+        if (pet.SerialNumber == newPosition)
+            return Result.Success<Error>();
+
+        var currentPosition = pet.SerialNumber;
+
+        if (newPosition.Value > currentPosition.Value)
+        {
+            foreach (var otherPet in _pets.Where(p =>
+                         p.SerialNumber.Value > currentPosition.Value && p.SerialNumber.Value <= newPosition.Value))
+            {
+                otherPet.SetSerialNumber(SerialNumber.Create(otherPet.SerialNumber.Value - 1).Value);
+            }
+        }
+        else
+        {
+            foreach (var otherPet in _pets.Where(p =>
+                         p.SerialNumber.Value < currentPosition.Value && p.SerialNumber.Value >= newPosition.Value))
+            {
+                otherPet.SetSerialNumber(SerialNumber.Create(otherPet.SerialNumber.Value + 1).Value);
+            }
+        }
+
+        pet.SetSerialNumber(newPosition);
+
+        return Result.Success<Error>();
     }
 
     public void Restore()

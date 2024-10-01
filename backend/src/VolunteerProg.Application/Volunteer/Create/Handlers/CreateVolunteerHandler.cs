@@ -67,8 +67,8 @@ public class CreateVolunteerHandler
                 description,
                 exp,
                 phone,
-                new SocialMediasDetails(socialMedia),
-                new RequisiteDetails(requisite));
+                new ValueObjectList<SocialMedia>(socialMedia),
+                new ValueObjectList<Requisite>(requisite));
 
             await _volunteersRepository.Add(volunteerResult, cancellationToken);
 

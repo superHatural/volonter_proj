@@ -1,6 +1,6 @@
 using VolunteerProg.Application.Volunteer.Create.Requests;
 using VolunteerProg.Application.Volunteer.Dtos;
-using VolunteerProg.Application.Volunteer.PetCreate.Create.Requests;
+using VolunteerProg.Application.Volunteer.PetCreate.Create.Commands;
 
 namespace VolunteerProg.API.Contracts;
 

@@ -64,7 +64,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         builder.OwnsOne(v => v.SocMedDetails, vb =>
         {
             vb.ToJson("social_media_details");
-            vb.OwnsMany(d => d.SocialMedias, ppb =>
+            vb.OwnsMany(d => d.Values, ppb =>
             {
                 ppb.Property(pp => pp.Title)
                     .IsRequired()
@@ -79,7 +79,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         builder.OwnsOne(v => v.ReqDetails, rb =>
         {
             rb.ToJson("requisite_details");
-            rb.OwnsMany(d => d.Requisites, rqb =>
+            rb.OwnsMany(d => d.Values, rqb =>
             {
                 rqb.Property(r => r.Description)
                     .IsRequired()

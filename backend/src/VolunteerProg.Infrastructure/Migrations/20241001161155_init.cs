@@ -87,6 +87,7 @@ namespace VolunteerProg.Infrastructure.Migrations
                     health_info = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
                     name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     phone_number = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    serial_number = table.Column<int>(type: "integer", nullable: false),
                     breed_id = table.Column<Guid>(type: "uuid", nullable: false),
                     species_id = table.Column<Guid>(type: "uuid", nullable: false),
                     pet_photo_details = table.Column<string>(type: "jsonb", nullable: true),

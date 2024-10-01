@@ -11,6 +11,7 @@ public abstract class Entity<TId> where TId : notnull
         {
             return false;
         }
+
         var other = (Entity<TId>)obj;
         return ReferenceEquals(this, other) || Id.Equals(other.Id);
     }
