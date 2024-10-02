@@ -41,7 +41,7 @@ public class UpdateVolunteerSocialMediaHandler
                 .ToList();
 
             var volunteerResult = volunteer.Value.UpdateSocialMediaInfo(
-                new SocialMediasDetails(socialMedia));
+                new ValueObjectList<SocialMedia>(socialMedia));
             if (volunteerResult.IsFailure)
                 return volunteerResult.Error;
 

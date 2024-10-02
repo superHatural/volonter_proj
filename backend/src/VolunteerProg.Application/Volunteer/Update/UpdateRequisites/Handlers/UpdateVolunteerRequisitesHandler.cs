@@ -41,7 +41,7 @@ public class UpdateVolunteerRequisitesHandler
                 .ToList();
 
             var volunteerResult = volunteer.Value.UpdateRequisiteInfo(
-                new RequisiteDetails(requisite));
+                new ValueObjectList<Requisite>(requisite));
             if (volunteerResult.IsFailure)
                 return volunteerResult.Error;
         

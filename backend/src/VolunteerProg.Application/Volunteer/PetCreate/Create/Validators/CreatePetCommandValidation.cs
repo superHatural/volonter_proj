@@ -1,7 +1,7 @@
 using FluentValidation;
 using VolunteerProg.Application.Validation;
 using VolunteerProg.Application.Volunteer.Dtos;
-using VolunteerProg.Application.Volunteer.PetCreate.Create.Requests;
+using VolunteerProg.Application.Volunteer.PetCreate.Create.Commands;
 using VolunteerProg.Domain.Aggregates.PetManagement.ValueObjects;
 using VolunteerProg.Domain.Shared;
 

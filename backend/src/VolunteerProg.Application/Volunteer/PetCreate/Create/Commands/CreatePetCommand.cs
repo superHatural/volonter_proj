@@ -1,7 +1,6 @@
 using VolunteerProg.Application.Volunteer.Dtos;
-using VolunteerProg.Domain.Shared.Ids;
 
-namespace VolunteerProg.Application.Volunteer.PetCreate.Create.Requests;
+namespace VolunteerProg.Application.Volunteer.PetCreate.Create.Commands;
 
 public record CreatePetCommand(
     Guid VolunteerId,

@@ -58,7 +58,7 @@ public class AddFileHandler
                 var fileToUpload = new FileData(file.Stream, CheckCategory.WhatAType(extension, null), filePath.Value);
                 files.Add(fileToUpload);
             }
-            var petResult = volunteer.Value.AddFilePet(PetId.Create(request.PetId), new PetPhotoDetails(filesPath));
+            var petResult = volunteer.Value.AddFilePet(PetId.Create(request.PetId), new ValueObjectList<FilePathData>(filesPath));
             if (petResult.IsFailure)
                 return volunteer.Error;
             

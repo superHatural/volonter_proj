@@ -1,6 +1,5 @@
 ﻿using System.Globalization;
 using System.Runtime.InteropServices.JavaScript;
-using CSharpFunctionalExtensions;
 using VolunteerProg.Domain.Aggregates.PetManagement.AggregateRoot;
 using VolunteerProg.Domain.Aggregates.PetManagement.ValueObjects;
 using VolunteerProg.Domain.Shared;
@@ -31,8 +30,8 @@ public sealed class Pet : Shared.Entity<PetId>, ISoftDelete
         Date birthDate,
         bool isVaccinated,
         PetStatus status,
-        PetPhotoDetails? petPhotoDetails,
-        RequisiteDetails? requisiteDetails) : base(id)
+        ValueObjectList<FilePathData>? petPhotoDetails,
+        ValueObjectList<Requisite>? requisiteDetails) : base(id)
     {
         Name = name;
         Description = description;
@@ -50,9 +49,9 @@ public sealed class Pet : Shared.Entity<PetId>, ISoftDelete
         PetPhotoDetails = petPhotoDetails;
         RequisiteDetails = requisiteDetails;
         DateOfCreate = Date.Create(DateTime.Now.ToString(CultureInfo.CurrentCulture)).Value;
-        
     }
-    
+
+    public SerialNumber SerialNumber { get; private set; }
     public NotEmptyVo Name { get; private set; } = default!;
     public NotEmptyVo Description { get; private set; } = default!;
     public SpeciesDetails SpeciesDetails { get; private set; } = default!;
@@ -66,11 +65,11 @@ public sealed class Pet : Shared.Entity<PetId>, ISoftDelete
     public Date BirthDate { get; private set; } = default!;
     public bool IsVaccinated { get; private set; } = default!;
     public PetStatus Status { get; private set; } = default!;
-    public PetPhotoDetails? PetPhotoDetails { get; private set; }
-    public RequisiteDetails? RequisiteDetails { get; private set; }
+    public ValueObjectList<FilePathData>? PetPhotoDetails { get; private set; }
+    public ValueObjectList<Requisite>? RequisiteDetails { get; private set; }
     public Date DateOfCreate { get; private set; } = default!;
 
-    public void AddPhoto(PetPhotoDetails photoDetails)
+    public void AddPhoto(ValueObjectList<FilePathData> photoDetails)
     {
         PetPhotoDetails = photoDetails;
     }
@@ -85,5 +84,10 @@ public sealed class Pet : Shared.Entity<PetId>, ISoftDelete
     {
         if (_deleted)
             _deleted = false;
+    }
+
+    public void SetSerialNumber(SerialNumber serialNumber)
+    {
+        SerialNumber = serialNumber;
     }
 }

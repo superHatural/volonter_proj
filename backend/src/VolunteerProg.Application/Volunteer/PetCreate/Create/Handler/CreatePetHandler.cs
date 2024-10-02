@@ -5,7 +5,7 @@ using VolunteerProg.Application.Database;
 using VolunteerProg.Application.FileProvider;
 using VolunteerProg.Application.Providers;
 using VolunteerProg.Application.Volunteer.Create.Requests;
-using VolunteerProg.Application.Volunteer.PetCreate.Create.Requests;
+using VolunteerProg.Application.Volunteer.PetCreate.Create.Commands;
 using VolunteerProg.Domain.Aggregates.PetManagement.Entities;
 using VolunteerProg.Domain.Aggregates.PetManagement.ValueObjects;
 using VolunteerProg.Domain.Shared;
@@ -42,7 +42,9 @@ public class CreatePetHandler
 
             var pet = CreatePet(command);
             
-            volunteerResult.Value.AddPet(pet);
+            var result = volunteerResult.Value.AddPet(pet);
+            if (result.IsFailure)
+                return result.Error;
             
             await _unitOfWork.SaveChanges(cancellationToken);
             
@@ -100,7 +102,7 @@ public class CreatePetHandler
             command.IsVaccinated,
             status,
             null,
-            new RequisiteDetails(requisites)
+            new ValueObjectList<Requisite>(requisites)
         );
 
         return pet;
