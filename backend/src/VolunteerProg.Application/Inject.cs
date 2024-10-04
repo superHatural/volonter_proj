@@ -1,14 +1,14 @@
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using VolunteerProg.Application.Volunteer.Create.Handlers;
-using VolunteerProg.Application.Volunteer.Delete.Handlers;
-using VolunteerProg.Application.Volunteer.PetCreate.AddFile.AddFileHandler;
-using VolunteerProg.Application.Volunteer.PetCreate.Create.Handler;
-using VolunteerProg.Application.Volunteer.PetCreate.DeleteFile.DeleteFileHandler;
-using VolunteerProg.Application.Volunteer.PetCreate.GetFiles.GetFilesHandler;
-using VolunteerProg.Application.Volunteer.Update.UpdateMainInfo.Handler;
-using VolunteerProg.Application.Volunteer.Update.UpdateRequisites.Handlers;
-using VolunteerProg.Application.Volunteer.Update.UpdateSocialMedia.Handlers;
+using VolunteerProg.Application.Volunteer.Create;
+using VolunteerProg.Application.Volunteer.Delete;
+using VolunteerProg.Application.Volunteer.PetCreate.AddFile;
+using VolunteerProg.Application.Volunteer.PetCreate.Create;
+using VolunteerProg.Application.Volunteer.PetCreate.DeleteFile;
+using VolunteerProg.Application.Volunteer.PetCreate.GetFiles;
+using VolunteerProg.Application.Volunteer.Update.UpdateMainInfo;
+using VolunteerProg.Application.Volunteer.Update.UpdateRequisites;
+using VolunteerProg.Application.Volunteer.Update.UpdateSocialMedia;
 
 namespace VolunteerProg.Application;
 

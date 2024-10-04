@@ -1,11 +1,10 @@
-using Xunit;
 using FluentAssertions;
-using System.Collections.Generic;
-using VolunteerProg.Domain.Aggregates.PetManagement.AggregateRoot;
 using VolunteerProg.Domain.Aggregates.PetManagement.Entities;
 using VolunteerProg.Domain.Aggregates.PetManagement.ValueObjects;
 using VolunteerProg.Domain.Shared;
 using VolunteerProg.Domain.Shared.Ids;
+
+namespace Volunteer.Domain.Test;
 
 public class VolunteerTests
 {
@@ -131,10 +130,10 @@ public class VolunteerTests
         result.Error.Should().Be(Errors.General.NotFound(nonExistentPetId)); // Ошибка "Не найдено"
     }
 
-    private Volunteer CreateVolunteer()
+    private VolunteerProg.Domain.Aggregates.PetManagement.AggregateRoot.Volunteer CreateVolunteer()
     {
         var notEmptyString = NotEmptyVo.Create("test").Value;
-        return new Volunteer(
+        return new VolunteerProg.Domain.Aggregates.PetManagement.AggregateRoot.Volunteer(
             VolunteerId.NewVolunteerId(),
             FullName.Create("test", "test").Value,
             Email.Create("john.doe@example.com").Value,

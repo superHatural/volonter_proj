@@ -10,7 +10,39 @@ public static class ResponseExtentions
 {
     public static ActionResult ToResponse(this Error error)
     {
-        var statusCode = error.Type switch
+        var statusCode = GetStatusCodeForErrorType(error.Type);
+        var envelope = Envelope.Error(error.ToErrorList());
+        return new ObjectResult(envelope)
+        {
+            StatusCode = statusCode
+        };
+    }
+
+    public static ActionResult ToResponse(this ErrorList errors)
+    {
+        if (!errors.Any())
+        {
+            return new ObjectResult(null)
+            {
+                StatusCode = StatusCodes.Status500InternalServerError
+            };
+        }
+
+        var distinctErrorsTypes = errors.Select(e => e.Type).Distinct().ToList();
+
+        var statusCode = distinctErrorsTypes.Count() > 1
+            ? StatusCodes.Status500InternalServerError
+            : GetStatusCodeForErrorType(distinctErrorsTypes.First());
+        
+        var envelope = Envelope.Error(errors);
+        return new ObjectResult(envelope)
+        {
+            StatusCode = statusCode
+        };
+    }
+
+    public static int GetStatusCodeForErrorType(this ErrorType errorType) =>
+        errorType switch
         {
             ErrorType.Validation => StatusCodes.Status400BadRequest,
             ErrorType.NotFound => StatusCodes.Status404NotFound,
@@ -18,33 +50,4 @@ public static class ResponseExtentions
             ErrorType.Failure => StatusCodes.Status500InternalServerError,
             _ => StatusCodes.Status500InternalServerError
         };
-        var responseError = new ResponseError(error.Code, error.Message, null);
-        var envelope = Envelope.Error([responseError]);
-        return new ObjectResult(envelope)
-        {
-            StatusCode = statusCode
-        };
-    }
-
-    public static ActionResult ToValidationErrorResponse(this ValidationResult result)
-    {
-        if (result.IsValid)
-        {
-            throw new InvalidOperationException("Result cannot be succeed");
-        } 
-
-        var validationErrors = result.Errors;
-        List<ResponseError> errors = [];
-
-        errors.AddRange(from validationError in validationErrors
-            let errorMessage = validationError.ErrorMessage
-            let error = Error.Deserialize(errorMessage)
-            select new ResponseError(error.Code, error.Message, validationError.PropertyName));
-
-        var envelope = Envelope.Error(errors);
-        return new ObjectResult(envelope)
-        {
-            StatusCode = StatusCodes.Status400BadRequest
-        };
-    }
 }

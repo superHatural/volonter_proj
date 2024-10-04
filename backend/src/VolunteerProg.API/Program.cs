@@ -4,7 +4,6 @@ using Serilog.Events;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 using VolunteerProg.API;
 using VolunteerProg.API.Middlewares;
-using VolunteerProg.API.Validation;
 using VolunteerProg.Application;
 using VolunteerProg.Infrastructure;
 
@@ -21,10 +20,6 @@ builder.Services.AddSerilog();
 builder.Services
     .AddInfrastructure(builder.Configuration)
     .AddApplication();
-builder.Services.AddFluentValidationAutoValidation(configuration =>
-{
-    configuration.OverrideDefaultResultFactoryWith<CustomResultFactory>();
-});
 
 var app = builder.Build();
 

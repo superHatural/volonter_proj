@@ -3,22 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using VolunteerProg.API.Contracts;
 using VolunteerProg.API.Extentions;
 using VolunteerProg.API.Processors;
-using VolunteerProg.Application.Volunteer.Create.Handlers;
-using VolunteerProg.Application.Volunteer.Create.Requests;
-using VolunteerProg.Application.Volunteer.Delete.Handlers;
-using VolunteerProg.Application.Volunteer.Delete.Requests;
+using VolunteerProg.Application.Volunteer.Create;
+using VolunteerProg.Application.Volunteer.Delete;
 using VolunteerProg.Application.Volunteer.Dtos;
-using VolunteerProg.Application.Volunteer.PetCreate.AddFile.AddFileHandler;
-using VolunteerProg.Application.Volunteer.PetCreate.AddFile.AddFileRequest;
-using VolunteerProg.Application.Volunteer.PetCreate.Create.Commands;
-using VolunteerProg.Application.Volunteer.PetCreate.Create.Handler;
-using VolunteerProg.Application.Volunteer.PetCreate.GetFiles.GetFilesHandler;
-using VolunteerProg.Application.Volunteer.Update.UpdateMainInfo.Handler;
-using VolunteerProg.Application.Volunteer.Update.UpdateMainInfo.Request;
-using VolunteerProg.Application.Volunteer.Update.UpdateRequisites.Handlers;
-using VolunteerProg.Application.Volunteer.Update.UpdateRequisites.Requests;
-using VolunteerProg.Application.Volunteer.Update.UpdateSocialMedia.Handlers;
-using VolunteerProg.Application.Volunteer.Update.UpdateSocialMedia.Requests;
+using VolunteerProg.Application.Volunteer.PetCreate.AddFile;
+using VolunteerProg.Application.Volunteer.PetCreate.Create;
+using VolunteerProg.Application.Volunteer.Update.UpdateMainInfo;
+using VolunteerProg.Application.Volunteer.Update.UpdateRequisites;
+using VolunteerProg.Application.Volunteer.Update.UpdateSocialMedia;
 using VolunteerProg.Domain.Shared;
 
 namespace VolunteerProg.API.Controllers;
@@ -34,10 +26,10 @@ public class VolunteerController : ApplicationController
     [HttpPost]
     public async Task<ActionResult<Guid>> Create(
         [FromServices] CreateVolunteerHandler handler,
-        [FromBody] CreateVolunteerRequest request,
+        [FromBody] CreateVolunteerСommand сommand,
         CancellationToken cancellationToken)
     {
-        var result = await handler.Handle(request, cancellationToken);
+        var result = await handler.Handle(сommand, cancellationToken);
         if (result.IsFailure)
             return result.Error.ToResponse();
         return Ok(result.Value);
@@ -49,7 +41,7 @@ public class VolunteerController : ApplicationController
         [FromBody] UpdateVolunteerMainInfoDto dto,
         CancellationToken cancellationToken)
     {
-        var request = new UpdateVolunteerMainInfoRequest(id, dto);
+        var request = new UpdateVolunteerMainInfoCommand(id, dto);
         var result = await handler.Handle(request, cancellationToken);
         if (result.IsFailure)
             return result.Error.ToResponse();
@@ -62,7 +54,7 @@ public class VolunteerController : ApplicationController
         [FromBody] UpdateVolunteerRequisitesDto dto,
         CancellationToken cancellationToken)
     {
-        var request = new UpdateVolunteerRequisitesRequest(id, dto);
+        var request = new UpdateVolunteerRequisitesCommand(id, dto);
         var result = await handler.Handle(request, cancellationToken);
         if (result.IsFailure)
             return result.Error.ToResponse();
@@ -75,7 +67,7 @@ public class VolunteerController : ApplicationController
         [FromBody] UpdateVolunteerSocialMediaDto dto,
         CancellationToken cancellationToken)
     {
-        var request = new UpdateVolunteerSocialMediaRequest(id, dto);
+        var request = new UpdateVolunteerSocialMediaCommand(id, dto);
         var result = await handler.Handle(request, cancellationToken);
         if (result.IsFailure)
             return result.Error.ToResponse();
@@ -87,7 +79,7 @@ public class VolunteerController : ApplicationController
         [FromServices] DeleteVolunteerHandler handler,
         CancellationToken cancellationToken)
     {
-        var request = new DeleteVolunteerRequest(id);
+        var request = new DeleteVolunteerCommand(id);
         var result = await handler.Handle(request, cancellationToken);
         if (result.IsFailure)
             return result.Error.ToResponse();
@@ -98,15 +90,10 @@ public class VolunteerController : ApplicationController
     public async Task<ActionResult> AddPet(
         [FromRoute] Guid id,
         [FromBody] CreatePetRequest request,
-        [FromServices] IValidator<CreatePetCommand> validator,
         [FromServices] CreatePetHandler handler,
         CancellationToken cancellationToken)
     {
         var command = request.ToCommand(id);
-        
-        var resultValidation = await validator.ValidateAsync(command, cancellationToken);
-        if (!resultValidation.IsValid)
-            return BadRequest(resultValidation.Errors);
         
         var result = await handler.Handle(command, cancellationToken);
         
@@ -125,7 +112,7 @@ public class VolunteerController : ApplicationController
     {
         await using var proc = new FormFileProcessor();
         var filesDto = proc.Process(files);
-        var request = new AddFileRequest(filesDto, volunteerId, petId);
+        var request = new AddFileCommand(filesDto, volunteerId, petId);
         var result = await handler.Handle(request, cancellationToken);
         if (result.IsFailure)
             return result.Error.ToResponse();
