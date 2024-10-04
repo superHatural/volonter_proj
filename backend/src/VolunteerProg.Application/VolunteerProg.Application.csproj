@@ -20,10 +20,4 @@
       <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Volunteer\Create\Commands\" />
-      <Folder Include="Volunteer\PetCreate\Create\Requests\" />
-      <Folder Include="Volunteer\Update\UpdateSocialMedia\" />
-    </ItemGroup>
-
 </Project>
