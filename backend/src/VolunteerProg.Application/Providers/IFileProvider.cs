@@ -19,6 +19,6 @@ public interface IFileProvider
         IEnumerable<string> fileNames,
         CancellationToken cancellationToken);
 
-    public Task<UnitResult<ErrorList>> RemoveFile(FileInformation fileInformation,
+    public Task<UnitResult<Error>> RemoveFile(FileInformation fileInformation,
         CancellationToken cancellationToken);
 }

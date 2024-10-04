@@ -162,7 +162,7 @@ public class MinioProvider : IFileProvider
         }
     }
 
-    public async Task<UnitResult<ErrorList>> RemoveFile(FileInformation fileInformation,
+    public async Task<UnitResult<Error>> RemoveFile(FileInformation fileInformation,
         CancellationToken cancellationToken)
     {
         try
@@ -175,7 +175,7 @@ public class MinioProvider : IFileProvider
             
             var objectStat = await _minioClient.StatObjectAsync(statArgs, cancellationToken);
             if (objectStat == null)
-                return Result.Success<ErrorList>();
+                return Result.Success<Error>();
             
             var args = new RemoveObjectArgs()
                 .WithBucket(fileInformation.BucketName)
@@ -189,10 +189,10 @@ public class MinioProvider : IFileProvider
                 "Fail to find a files in minio with path {path} in bucket {bucket}",
                 fileInformation.FilePath.Path,
                 fileInformation.BucketName);
-            return Error.Failure("file.find", "fail to find file in minio").ToErrorList();
+            return Error.Failure("file.find", "fail to find file in minio");
         }
 
-        return Result.Success<ErrorList>();
+        return Result.Success<Error>();
     }
 
     private async Task<UnitResult<ErrorList>> DeleteObject(
