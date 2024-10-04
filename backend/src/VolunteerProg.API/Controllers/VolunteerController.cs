@@ -26,10 +26,10 @@ public class VolunteerController : ApplicationController
     [HttpPost]
     public async Task<ActionResult<Guid>> Create(
         [FromServices] CreateVolunteerHandler handler,
-        [FromBody] CreateVolunteerСommand сommand,
+        [FromBody] CreateVolunteerRequest request,
         CancellationToken cancellationToken)
     {
-        var result = await handler.Handle(сommand, cancellationToken);
+        var result = await handler.Handle(request.ToCommand(), cancellationToken);
         if (result.IsFailure)
             return result.Error.ToResponse();
         return Ok(result.Value);
@@ -41,8 +41,8 @@ public class VolunteerController : ApplicationController
         [FromBody] UpdateVolunteerMainInfoDto dto,
         CancellationToken cancellationToken)
     {
-        var request = new UpdateVolunteerMainInfoCommand(id, dto);
-        var result = await handler.Handle(request, cancellationToken);
+        var command = new UpdateVolunteerMainInfoCommand(id, dto);
+        var result = await handler.Handle(command, cancellationToken);
         if (result.IsFailure)
             return result.Error.ToResponse();
         return Ok(result.Value);
@@ -54,8 +54,8 @@ public class VolunteerController : ApplicationController
         [FromBody] UpdateVolunteerRequisitesDto dto,
         CancellationToken cancellationToken)
     {
-        var request = new UpdateVolunteerRequisitesCommand(id, dto);
-        var result = await handler.Handle(request, cancellationToken);
+        var command = new UpdateVolunteerRequisitesCommand(id, dto);
+        var result = await handler.Handle(command, cancellationToken);
         if (result.IsFailure)
             return result.Error.ToResponse();
         return Ok(result.Value);
@@ -67,8 +67,8 @@ public class VolunteerController : ApplicationController
         [FromBody] UpdateVolunteerSocialMediaDto dto,
         CancellationToken cancellationToken)
     {
-        var request = new UpdateVolunteerSocialMediaCommand(id, dto);
-        var result = await handler.Handle(request, cancellationToken);
+        var command = new UpdateVolunteerSocialMediaCommand(id, dto);
+        var result = await handler.Handle(command, cancellationToken);
         if (result.IsFailure)
             return result.Error.ToResponse();
         return Ok(result.Value);
@@ -79,8 +79,8 @@ public class VolunteerController : ApplicationController
         [FromServices] DeleteVolunteerHandler handler,
         CancellationToken cancellationToken)
     {
-        var request = new DeleteVolunteerCommand(id);
-        var result = await handler.Handle(request, cancellationToken);
+        var command = new DeleteVolunteerCommand(id);
+        var result = await handler.Handle(command, cancellationToken);
         if (result.IsFailure)
             return result.Error.ToResponse();
         return Ok(result.Value);
@@ -111,9 +111,13 @@ public class VolunteerController : ApplicationController
         CancellationToken cancellationToken)
     {
         await using var proc = new FormFileProcessor();
+        
         var filesDto = proc.Process(files);
-        var request = new AddFileCommand(filesDto, volunteerId, petId);
-        var result = await handler.Handle(request, cancellationToken);
+        
+        var command = new AddFileCommand(filesDto, volunteerId, petId);
+        
+        var result = await handler.Handle(command, cancellationToken);
+        
         if (result.IsFailure)
             return result.Error.ToResponse();
         return Ok(result.Value);

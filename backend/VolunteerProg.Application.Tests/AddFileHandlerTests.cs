@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using VolunteerProg.Application.Database;
 using VolunteerProg.Application.FileProvider;
+using VolunteerProg.Application.Messaging;
 using VolunteerProg.Application.Providers;
 using VolunteerProg.Application.Volunteer;
 using VolunteerProg.Application.Volunteer.PetCreate.AddFile;
@@ -22,6 +23,7 @@ public class AddFileHandlerTests
     private readonly Mock<IVolunteersRepository> _volunteersRepositoryMock;
     private readonly Mock<IUnitOfWork> _unitOfWorkMock;
     private readonly AddFileHandler _handler;
+    private readonly Mock<IMessageQueue<IEnumerable<FileInformation>>> _messageQueue;
 
     public AddFileHandlerTests()
     {
@@ -29,10 +31,13 @@ public class AddFileHandlerTests
         _loggerMock = new Mock<ILogger<AddFileHandler>>();
         _volunteersRepositoryMock = new Mock<IVolunteersRepository>();
         _unitOfWorkMock = new Mock<IUnitOfWork>();
+        _messageQueue = new Mock<IMessageQueue<IEnumerable<FileInformation>>>();
+        
 
         _handler = new AddFileHandler(
             _fileProviderMock.Object,
             _loggerMock.Object,
+            _messageQueue.Object,
             _volunteersRepositoryMock.Object,
             _unitOfWorkMock.Object
         );
@@ -118,7 +123,7 @@ public class AddFileHandlerTests
         _fileProviderMock
             .Setup(x => 
                 x.UploadFiles(It.IsAny<List<FileData>>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Result.Success<IReadOnlyList<FilePath>, Error>(new List<FilePath>
+            .ReturnsAsync(Result.Success<IReadOnlyList<FilePath>, ErrorList>(new List<FilePath>
                 { FilePath.Create(NotEmptyVo.Create("path").Value, ".jpg").Value }));
 
         // Мок успешного сохранения изменений
@@ -160,7 +165,8 @@ public class AddFileHandlerTests
         _fileProviderMock
             .Setup(x => 
                 x.UploadFiles(It.IsAny<List<FileData>>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Result.Failure<IReadOnlyList<FilePath>, Error>(Error.Failure("file.upload", "Fail to upload files in minio")));
+            .ReturnsAsync(Result.Failure<IReadOnlyList<FilePath>, ErrorList>
+                (Error.Failure("file.upload", "Fail to upload files in minio")));
 
         var transactionMock = new Mock<IDbTransaction>();
 

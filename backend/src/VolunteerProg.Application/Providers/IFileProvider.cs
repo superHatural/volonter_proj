@@ -7,15 +7,18 @@ namespace VolunteerProg.Application.Providers;
 
 public interface IFileProvider
 {
-    public Task<Result<IReadOnlyList<FilePath>, Error>> UploadFiles(
+    public Task<Result<IReadOnlyList<FilePath>, ErrorList>> UploadFiles(
         IEnumerable<FileData> filesData,
         CancellationToken cancellationToken);
 
-    public Task<Result<IReadOnlyList<string>, Error>> GetFiles(
+    public Task<Result<IReadOnlyList<string>, ErrorList>> GetFiles(
         IEnumerable<string> fileNames,
         CancellationToken cancellationToken);
 
-    public  Task<UnitResult<Error>> DeleteFile(
+    public  Task<UnitResult<ErrorList>> DeleteFile(
         IEnumerable<string> fileNames,
+        CancellationToken cancellationToken);
+
+    public Task<UnitResult<ErrorList>> RemoveFile(FileInformation fileInformation,
         CancellationToken cancellationToken);
 }
