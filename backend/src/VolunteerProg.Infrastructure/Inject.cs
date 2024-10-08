@@ -2,8 +2,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Minio;
 using VolunteerProg.Application.Database;
+using VolunteerProg.Application.FileProvider;
+using VolunteerProg.Application.Messaging;
 using VolunteerProg.Application.Providers;
 using VolunteerProg.Application.Volunteer;
+using VolunteerProg.Infrastructure.BackgroundService;
+using VolunteerProg.Infrastructure.Files;
+using VolunteerProg.Infrastructure.MessageQueues;
 using VolunteerProg.Infrastructure.Options;
 using VolunteerProg.Infrastructure.Providers;
 using VolunteerProg.Infrastructure.Repositories;
@@ -17,8 +22,15 @@ public static class Inject
     {
         services.AddScoped<ApplicationDbContext>();
         services.AddScoped<IVolunteersRepository, VolunteersRepository>();
-        
+        services.AddScoped<IFilesCleanerService, FilesCleanerService>();
+
         services.AddMinio(configuration);
+
+        services.AddHostedService<FilesCleanerBackgroundService>();
+
+        services
+            .AddSingleton<IMessageQueue<IEnumerable<FileInformation>>,
+                InMemoryMessageQueue<IEnumerable<FileInformation>>>();
 
         return services;
     }
@@ -40,5 +52,4 @@ public static class Inject
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         return services;
     }
-    
 }
